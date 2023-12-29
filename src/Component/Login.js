@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./Login.css";
 
+
 function Login() {
   const navigate = useNavigate();
 
@@ -66,28 +67,30 @@ function Login() {
       <div className="">
         <Navbar />
         <div className="grid justify-items-center mt-10 ">
-          <form onSubmit={handleSubmit} className="bg-white shadow rounded px-8 pt-6 pb-8 mb-4 w-5/12">
-            <label className="mt-10">
-              <p>เข้าสู้ระบบ</p>
+          <form onSubmit={handleSubmit} className="bg-white shadow rounded px-8 pt-6 pb-8 mb-4 w-1/4">
+            <label className="mt-10 text-2xl font-bold">
+              <p className="mb-10">เข้าสู่ระบบ</p>
             </label>
 
-            <label>
-              username:
+            <label className="text-lg font-bold">
+              <p className="my-3">ชื่อผู้ใช้</p>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 name="username"
                 value={inputs.username || ""}
                 onChange={handleChange}
+                placeholder="Username"
               />
             </label>
 
-            <label>
-              password:
+            <label className="text-lg font-bold">
+              <p className="my-3">รหัสผ่าน</p>
               <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
                 name="password"
                 value={inputs.password || ""}
                 onChange={handleChange}
+                placeholder="Password"
               />
             </label>
 
@@ -96,6 +99,7 @@ function Login() {
         </div>
       </div>
     </div>
+    
   );
 }
 

@@ -21,25 +21,25 @@ function Navbar() {
         <div className="">
           <ul className="grid grid-cols-4 gap-x-0 justify-items-center">
             <li>
-                <a className="text-xl">หน้าหลัก</a>
+                <a className="text-xl font-bold">หน้าหลัก</a>
             </li>
             <li>
-                <a className="text-xl">การ์ตูน</a>
+                <a className="text-xl font-bold">การ์ตูน</a>
             </li>
             <li>
-                <a className="text-xl">นิยาย</a>
+                <a className="text-xl font-bold">นิยาย</a>
             </li>
             <li>
-                <a className="text-xl">ตัวละคร</a>
+                <a className="text-xl font-bold">ตัวละคร</a>
             </li>
           </ul>
         </div>
         <div className="grid grid-cols-4 justify-items-center">
-            <div className="col-end-3">
+            <div className="col-end-3 text-lg  bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded shadow">
                 <button onClick={register}>สมัครสมาชิก</button>
             </div>
 
-            <div className="col-end-4 ">
+            <div className="col-end-4 text-lg bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded shadow">
                 <button onClick={login}>เข้าสู่ระบบ</button>
             </div>
           
