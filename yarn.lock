@@ -2003,7 +2003,7 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@popperjs/core@^2.11.8":
+"@popperjs/core@^2.11.2", "@popperjs/core@^2.11.8":
   version "2.11.8"
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
@@ -8184,6 +8184,13 @@ postcss@^7.0.35:
   dependencies:
     picocolors "^0.2.1"
     source-map "^0.6.1"
+
+preline@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/preline/-/preline-2.0.3.tgz"
+  integrity sha512-V/sLmRIHd23UCdvJNRKKszntgUqA0381erVzRpQ48NjjMOgI7DyFW4mr+lg387V0oeBc5Dx9Jxa5voppVoH9GA==
+  dependencies:
+    "@popperjs/core" "^2.11.2"
 
 prelude-ls@^1.2.1:
   version "1.2.1"

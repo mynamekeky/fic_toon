@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 function Homepage(){
     const navigate = useNavigate();
@@ -13,9 +14,7 @@ function Homepage(){
 
     return(
         <div>
-            <h1>หน้าแรกสุด</h1>
-            <button onClick={login}>login</button>
-            <button onClick={register}>Register</button>
+            <Navbar />
         </div>
     )
 }

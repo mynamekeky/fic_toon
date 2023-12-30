@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Navbar from "./Navbar";
 
-
 function Register() {
   const [inputs, setInputs] = useState({});
   const [role, setRole] = useState({});
@@ -12,8 +11,6 @@ function Register() {
   const navigate = useNavigate();
 
   const MySwal = withReactContent(Swal);
-
-
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -33,21 +30,14 @@ function Register() {
       return;
     }
 
-  //   const isUsernameAvailable = await fetch(`http://127.0.0.1:3500/users/username/${inputs.username}`, {
-  //   method: "GET",
-  //   headers: myHeaders,
-  // });
-
-  // if (!isUsernameAvailable.ok) {
-  //   const error = await isUsernameAvailable.json();
-  //   Swal.fire({
-  //     text: error.message,
-  //     icon: "error",
-  //   });
-  //   return;
-  // }
-
-    const requiredFields = ["name", "username", "password", "passwordConfirm", "email", "role"];
+    const requiredFields = [
+      "name",
+      "username",
+      "password",
+      "passwordConfirm",
+      "email",
+      "role",
+    ];
     const areAllRequiredFieldsFilled = requiredFields.every(
       (field) => !!inputs[field] && inputs[field].trim() !== ""
     );
@@ -140,14 +130,23 @@ function Register() {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        if (result) {
+         if (result.massage === "Username Already Exits"){
           Swal.fire({
-            text: "Register Success",
+            text: "ชื่อผู้ใช้เป็นสมาชิกอยู่แล้ว",
+            icon: "error",
+          });
+        }
+        
+        else if (result) {
+          Swal.fire({
+            text: "สมัครสมาชิกเสร็จสิ้น",
             icon: "success",
           }).then((value) => {
             navigate("/login");
           });
-        }else {
+        } 
+        
+        else {
           Swal.fire({
             text: "กรุณากรอกข้อมูล",
             icon: "error",
@@ -157,7 +156,6 @@ function Register() {
       .catch((error) => console.log("error", error));
   };
 
-  
   return (
     <div>
       <Navbar />
@@ -170,102 +168,195 @@ function Register() {
             <p className="mb-10">สมัครสมาชิก</p>
           </label>
 
-          <label className="text-lg font-bold">
-            <p className="my-3">นามปากกา</p>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="name"
-              value={inputs.name || ""}
-              onChange={handleChange}
-              placeholder="Name"
-              
-            />
-          </label>
-
-          <label className="text-lg font-bold">
-            <p className="my-3">อีเมล</p>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="email"
-              name="email"
-              value={inputs.email || ""}
-              onChange={handleChange}
-              placeholder="you@site.com"
-              pattern="^[a-zA-Z0-9.@_%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$"
-            />
-          </label>
-
-          <label className="text-lg font-bold">
-            <p className="my-3">ชื่อผู้ใช้</p>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="username"
-              value={inputs.username || ""}
-              onChange={handleChange}
-              placeholder="Username"
-              pattern="^[a-zA-Z0-9_]+$"      
-            />
-          </label>
-
-          <label className="text-lg font-bold">
-            <p className="my-3">รหัสผ่าน</p>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="password"
-              name="password"
-              value={inputs.password || ""}
-              onChange={handleChange}
-              placeholder="Password"
-              pattern="^[a-zA-Z0-9_.!@#$%^&*()+-=]+$" 
-            />
-          </label>
-
-          <label className="text-lg font-bold">
-            <p className="my-3">ยืนยันรหัสผ่าน</p>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="password"
-              name="passwordConfirm"
-              value={inputs.passwordConfirm || ""}
-              onChange={handleChange}
-              placeholder="Confirm-Password"
-              
-            />
-          </label>
-
-          
-
-          <label className="text-lg font-bold">
-            <p className="my-3">บทบาท</p>
-            <div className="flex gap-10">
+          <label className="">
+            <p className="my-3 text-lg font-bold">นามปากกา</p>
+            <div class="relative">
               <input
-              type="radio"
-              name="role"
-              value="MEMBER"
-              id="member"
-              defaultChecked={inputs.role === "MEMBER"}
-              onChange={handleChange}
-            />
-            <label htmlFor="member">นักอ่าน (Reader)</label>
-            <input
-              type="radio"
-              name="role"
-              value="CREATOR"
-              id="creator"
-              defaultChecked={inputs.role === "CREATOR"}
-              onChange={handleChange}
-            />
-            <label htmlFor="creator">นักสร้างสรรค์ (Creator)</label>
+                class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
+                type="text"
+                name="name"
+                value={inputs.name || ""}
+                onChange={handleChange}
+                placeholder="Name"
+              />
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                <svg
+                  class="w-[16px] h-[16px] text-gray-600 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              </div>
             </div>
-            
           </label>
 
-          <input 
+          <label className="">
+            <p className="my-3 text-lg font-bold">อีเมล</p>
+            <div class="relative">
+              <input
+                class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
+                type="email"
+                name="email"
+                value={inputs.email || ""}
+                onChange={handleChange}
+                placeholder="you@mail.com"
+                pattern="^[a-zA-Z0-9.@_%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$"
+              />
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                <svg
+                  class="w-[16px] h-[16px] text-gray-600 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"
+                  />
+                </svg>
+              </div>
+            </div>
+          </label>
+
+          <label className="">
+            <p className="my-3 text-lg font-bold">ชื่อผู้ใช้</p>
+            <div class="relative">
+              <input
+                class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
+                type="text"
+                name="username"
+                value={inputs.username || ""}
+                onChange={handleChange}
+                placeholder="Username"
+                pattern="^[a-zA-Z0-9_]+$"
+              />
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                <svg
+                  class="w-[16px] h-[16px] text-gray-600 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 18"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </label>
+
+          <label className="">
+            <p className="my-3 text-lg font-bold">รหัสผ่าน</p>
+            <div class="relative">
+              <input
+                class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
+                type="password"
+                name="password"
+                value={inputs.password || ""}
+                onChange={handleChange}
+                placeholder="Password"
+                pattern="^[a-zA-Z0-9_.!@#$%^&*()+-=]+$"
+              />
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                <svg
+                  class="w-[16px] h-[16px] text-gray-600 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 16 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="M11.5 8V4.5a3.5 3.5 0 1 0-7 0V8M8 12v3M2 8h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </label>
+
+          <label className="">
+            <p className="my-3 text-lg font-bold">ยืนยันรหัสผ่าน</p>
+            <div class="relative">
+              <input
+                class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
+                type="password"
+                name="passwordConfirm"
+                value={inputs.passwordConfirm || ""}
+                onChange={handleChange}
+                placeholder="Confirm-Password"
+              />
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                <svg
+                  class="w-[16px] h-[16px] text-gray-600 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 16 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="M11.5 8V4.5a3.5 3.5 0 1 0-7 0V8M8 12v3M2 8h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </label>
+
+          <label className="">
+            <p className="my-3 text-lg font-bold">บทบาท</p>
+            <div className="flex gap-6">
+              <input
+                className="accent-primary "
+                type="radio"
+                name="role"
+                value="MEMBER"
+                id="member"
+                defaultChecked={inputs.role === "MEMBER"}
+                onChange={handleChange}
+              />
+              <label htmlFor="member" className="font-bold text-lg">นักอ่าน (Reader)</label>
+              <input
+                className="accent-primary font-bold text-lg"
+                type="radio"
+                name="role"
+                value="CREATOR"
+                id="creator"
+                defaultChecked={inputs.role === "CREATOR"}
+                onChange={handleChange}
+              />
+              <label htmlFor="creator" className="font-bold text-lg">นักสร้างสรรค์ (Creator)</label>
+              
+            </div>
+          </label>
+
+          <input
             value="สมัครสมาชิก"
             type="submit"
-            className="mt-10 text-lg font-bold shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
+            className="mt-10 text-2xl font-bold shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
           />
         </form>
       </div>
