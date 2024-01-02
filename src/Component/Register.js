@@ -356,7 +356,7 @@ function Register() {
           <input
             value="สมัครสมาชิก"
             type="submit"
-            className="mt-10 text-2xl font-bold shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
+            className="mt-10 text-2xl shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
           />
         </form>
       </div>

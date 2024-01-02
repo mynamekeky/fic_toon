@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import Navbarread from "./Navbarread";
+import { Dropdown } from "flowbite-react";
+import Navbarcreator from "./Navbarceartor";
 
 function Main_page() {
   const navigate = useNavigate();
@@ -9,12 +12,9 @@ function Main_page() {
   const params = useParams();
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + token
-    );
+    myHeaders.append("Authorization", "Bearer " + token);
 
     var requestOptions = {
       method: "GET",
@@ -22,25 +22,22 @@ function Main_page() {
       redirect: "follow",
     };
 
-
-
-
     fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        if (result.status === 200){
-            setUser(result.user)
-            setIsLoaded(false)
-        }else if(result.message === 'Unauthorized'){
-            Swal.fire({
-                text: "กรุณา Login",
-                icon: "error"
-              }).then((value) => {
-                navigate('/login')
-              })
+        if (result.status === 200) {
+          setUser(result.user);
+          setIsLoaded(false);
+        } else if (result.message === "Unauthorized") {
+          Swal.fire({
+            text: "กรุณา Login",
+            icon: "error",
+          }).then((value) => {
+            navigate("/login");
+          });
         }
-        console.log(result)
-    })
+        console.log(result);
+      })
       .catch((error) => console.log("error", error));
   }, []);
 
@@ -49,27 +46,11 @@ function Main_page() {
     navigate("/");
   };
 
-  
   return (
     <div>
+      {user.role === "MEMBER" && <Navbarread />}
+      {user.role === "CREATOR" && <Navbarcreator />}
       <div>
-        <nav>
-          <a>
-            <li>นิยาย</li>
-            <li>การ์ตูน</li>
-            <li>ไม่รู้</li>
-          </a>
-        </nav>
-
-        <div>
-        <div>{user.name}</div>
-        <div>{user.email}</div>
-        <div>{user.role}</div>
-        </div>
-      </div>
-
-      <div>
-        <button onClick={logout}>logout</button>
       </div>
     </div>
   );

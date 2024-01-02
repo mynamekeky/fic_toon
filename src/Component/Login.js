@@ -61,6 +61,11 @@ function Login() {
             text: "กรุณากรอกข้อมูลให้ครบถ้วน",
             icon: "error",
           });
+        }else if(result.statusCode === 401) {
+          Swal.fire({
+            text: "รหัสผ่านไม่ถูกต้อง",
+            icon: "error",
+          });
         }
       })
       .catch((error) => console.log("error", error));
