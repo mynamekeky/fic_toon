@@ -11,6 +11,7 @@ module.exports = {
         'primary': '#6F5EE0',
         'danger': '#EB5757',
         'warning':'#FFD43E',
+        'pass':'#27AE60',
       },
     }
   },
