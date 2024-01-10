@@ -51,7 +51,7 @@ function Navbarread(){
       };
 return(
     
-    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5">
+    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5 mb-16">
       <nav class="max-w-[85rem] w-full mx-auto px-4 flex flex-wrap basis-full items-center justify-between">
         
         <img src="/img/logo/fictoon_logo.jpg" width={90} height={30}></img>
