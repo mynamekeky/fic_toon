@@ -6,6 +6,8 @@ import Homepage from './Component/Homepage';
 import Register from './Component/Register';
 import Createpage from './Component/Createpage';
 import Workpage from './Component/Workpage';
+import Storypage from './Component/Storypage';
+import Storyupdate from './Component/Storyupdate';
 
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path="register" element={<Register/>} />
         <Route path="createpage" element={<Createpage/>} />
         <Route path="workpage" element={<Workpage/>} />
+        <Route path="storypage/:id" element={<Storypage/>} />
+        <Route path="storyupdate/:id" element={<Storyupdate/>} />
         
 
       </Routes>

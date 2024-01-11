@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Navbarread from "./Navbarread";
 import Navbarcreator from "./Navbarceartor";
+import Storypage from "./Storypage";
 
 function Workpage() {
   const [items, setItems] = useState([]);
@@ -14,6 +15,10 @@ function Workpage() {
   const [user, setUser] = useState([]);
 
   useEffect(() => {
+    UserGet()
+  }, []);
+
+  const UserGet = () => {
     const token = localStorage.getItem("token");
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + token);
@@ -48,7 +53,43 @@ function Workpage() {
         console.log(result);
         setItems(result);
       });
-  }, []);
+  }
+
+  const UserUpdate = (id) => {
+    window.location = '/storyupdate/' + id
+  }
+
+  const UserDelete = (id) => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var raw = "";
+
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`http://127.0.0.1:3500/works/${id}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 200) {
+          Swal.fire({
+            text: "success",
+            icon: "success",
+          });
+          UserGet()
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const Storypage = id =>{
+    window.location = '/storypage/' + id
+  }
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -149,7 +190,12 @@ function Workpage() {
                     {items.map((row) => (
                       <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
-                          <img src={`../img/work/` + row.picture} width={75} height={100}></img>
+                          <img
+                            onClick={() => Storypage(row.id)}
+                            src={`../img/work/` + row.picture}
+                            width={75}
+                            height={100}
+                          ></img>
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap text-2xl font-bold text-gray-800 dark:text-gray-200">
@@ -203,6 +249,7 @@ function Workpage() {
 
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
+                            onClick={() => UserUpdate(row.id)}
                             type="button"
                             class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-warning text-white hover:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
@@ -212,6 +259,7 @@ function Workpage() {
 
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
+                            onClick={() => UserDelete(row.id)}
                             type="button"
                             class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-danger text-white hover:bg-red-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
