@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "./Storypage.css"
+import Navbar from "./Navbar";
 
 function Storypage() {
   // Accepting `id` as a prop
@@ -38,13 +39,6 @@ function Storypage() {
         if (result.status === 200) {
           setUser(result.user);
           setIsLoaded(false);
-        } else if (result.message === "Unauthorized") {
-          Swal.fire({
-            text: "กรุณา Login",
-            icon: "error",
-          }).then((value) => {
-            navigate("/login");
-          });
         }
         console.log(result);
       })
@@ -77,6 +71,7 @@ function Storypage() {
 
   return (
     <div>
+      {!user.role && <Navbar />}
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
       <div className="w-5/12 m-auto container mx-auto border rounded-lg bg-white px-12 py-12 mb-32">

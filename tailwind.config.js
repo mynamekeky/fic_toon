@@ -12,6 +12,9 @@ module.exports = {
         'danger': '#EB5757',
         'warning':'#FFD43E',
         'pass':'#27AE60',
+        'info':'#2F80ED',
+        'sec':'#DF3F69',
+        'grey': '#9CA3AF',
       },
     }
   },

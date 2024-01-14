@@ -23,9 +23,6 @@ function Navbarcreator(){
           redirect: "follow",
         };
     
-    
-    
-    
         fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
           .then((response) => response.json())
           .then((result) => {
@@ -57,9 +54,22 @@ function Navbarcreator(){
       const workpage = () => {
         navigate("/workpage");
       };
+
+      const fiction = () => {
+        navigate("/fictionpage");
+      };
+
+      const cartoon = () => {
+        navigate("/cartoonpage");
+      };
+
+      const main_page = () => {
+        navigate("/main_page");
+      };
+
 return(
     
-    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5 mb-16">
+    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5 mb-10">
       <nav class="max-w-[85rem] w-full mx-auto px-4 flex flex-wrap basis-full items-center justify-between">
         
         <img src="/img/logo/fictoon_logo.jpg" width={90} height={30}></img>
@@ -101,9 +111,9 @@ return(
           </div>
           <div id="navbar-alignment" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:grow-0 sm:basis-auto sm:block sm:order-2">
             <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:mt-0 sm:ps-5">
-              <a class="text-xl font-bold text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" >หน้าหลัก</a>
-              <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">นวนิยาย</a>
-              <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">การ์ตูน</a>
+              <a class="text-xl font-bold text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={main_page}>หน้าหลัก</a>
+              <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={fiction}>นวนิยาย</a>
+              <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={cartoon}>การ์ตูน</a>
               <a class="text-xl font-bold  text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">ตัวละคร</a>
             </div>
           </div>
