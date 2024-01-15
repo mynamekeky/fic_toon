@@ -39,6 +39,14 @@ function Homepage() {
     window.location = "/storypage/" + id;
   };
 
+  const ficpage = () => {
+    navigate("/fictionpage");
+  };
+
+  const carpage = () => {
+    navigate("/cartoonpage");
+  };
+
   return (
     <div>
       <Navbar />
@@ -61,7 +69,7 @@ function Homepage() {
               <div className="text-xl font-bold">นวนิยาย</div>
             </div>
             <div>
-              <a className="text-xl font-bold">ดูทั้งหมด</a>
+              <a className="text-xl font-bold cursor-pointer" onClick={ficpage}>ดูทั้งหมด</a>
               </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
@@ -92,7 +100,7 @@ function Homepage() {
                       </div>
                     </div>
                     <img
-                      className="rounded-xl h-72 w-56"
+                      className="rounded-xl h-72 w-56 cursor-pointer"
                       src={`../img/work/` + fiction.picture}
                       width={224}
                       height={299}
@@ -123,7 +131,7 @@ function Homepage() {
               <div className="text-xl font-bold">การ์ตูน</div>
             </div>
             <div>
-              <a className="text-xl font-bold">ดูทั้งหมด</a>
+              <a className="text-xl font-bold cursor-pointer" onClick={carpage}>ดูทั้งหมด</a>
               </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
@@ -154,7 +162,7 @@ function Homepage() {
                       </div>
                     </div>
                     <img
-                      className="rounded-xl h-72 w-56"
+                      className="rounded-xl h-72 w-56 cursor-pointer"
                       src={`../img/work/` + cartoon.picture}
                       width={224}
                       height={299}

@@ -61,6 +61,8 @@ function Navbarread(){
       const main_page = () => {
         navigate("/main_page");
       };
+
+      
 return(
     
     <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5 mb-10">

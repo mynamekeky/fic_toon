@@ -110,7 +110,7 @@ function Fictionpage() {
                     </div>
                   </div>
                   <img
-                    className="rounded-xl h-72 w-56"
+                    className="rounded-xl h-72 w-56 cursor-pointer"
                     src={`../img/work/` + row.picture}
                     width={75}
                     height={100}

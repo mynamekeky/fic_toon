@@ -140,7 +140,7 @@ function Storyupdate() {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-         if (result.status === 200){
+        if (result.status === 200) {
           Swal.fire({
             text: "แก้ไขเสร็จสิ้น",
             icon: "success",
@@ -148,7 +148,6 @@ function Storyupdate() {
             navigate("/Storypage/" + id);
           });
         }
-        
       })
       .catch((error) => console.log("error", error));
   };
@@ -179,8 +178,6 @@ function Storyupdate() {
   const Backto = () => {
     navigate("/workpage");
   };
-
-
 
   return (
     <div>
@@ -380,15 +377,37 @@ function Storyupdate() {
           <button
             onClick={Backto}
             type="button"
-            className="w-full mt-10 text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
+            className="w-full inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"
+              />
+            </svg>
             ย้อนกลับ
           </button>
           <button
-            // onClick={() => Update(id)}
             type="submit"
-            className=" w-full mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            className=" w-full inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-save"
+              viewBox="0 0 16 16"
+            >
+              <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
+            </svg>
             บันทึก
           </button>
         </div>

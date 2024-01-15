@@ -65,6 +65,14 @@ function Main_page() {
     window.location = "/storypage/" + id;
   };
 
+  const ficpage = () => {
+    navigate("/fictionpage");
+  };
+
+  const carpage = () => {
+    navigate("/cartoonpage");
+  };
+
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
@@ -88,7 +96,7 @@ function Main_page() {
               </div>
               <div className="item-center text-xl font-bold">นวนิยาย</div>
             </div>
-            <div><a className="text-xl font-bold">ดูทั้งหมด</a></div>
+            <div><a className="text-xl font-bold cursor-pointer" onClick={ficpage}>ดูทั้งหมด</a></div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
             {items
@@ -118,7 +126,7 @@ function Main_page() {
                       </div>
                     </div>
                     <img
-                      className="rounded-xl h-72 w-56"
+                      className="rounded-xl h-72 w-56 cursor-pointer"
                       src={`../img/work/` + fiction.picture}
                       width={224}
                       height={299}
@@ -149,7 +157,7 @@ function Main_page() {
               <div className="item-center text-xl font-bold">การ์ตูน</div>
             </div>
             <div>
-              <a className="text-xl font-bold">ดูทั้งหมด</a>
+              <a className="text-xl font-bold cursor-pointer" onClick={carpage}>ดูทั้งหมด</a>
               </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
@@ -180,7 +188,7 @@ function Main_page() {
                       </div>
                     </div>
                     <img
-                      className="rounded-xl h-72 w-56"
+                      className="rounded-xl h-72 w-56 cursor-pointer"
                       src={`../img/work/` + cartoon.picture}
                       width={224}
                       height={299}
