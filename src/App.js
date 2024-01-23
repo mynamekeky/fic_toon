@@ -11,6 +11,13 @@ import Storyupdate from "./Component/Storyupdate";
 import Fictionpage from "./Component/Fictionpage";
 import Cartoonpage from "./Component/Cartoonpage";
 import Navbar from "./Component/Navbar";
+import Episodefictionpage from "./Component/Episodefictionpage";
+import Episodecartoonpage from "./Component/Episodecartoonpage";
+import Episodelistpage from "./Component/Episodelistpage";
+import Epficcreate from "./Component/Epficcreat";
+import Eptooncreate from "./Component/Eptooncreate";
+import Epupdatefic from "./Component/Epupdatefic";
+import Epupdatetoon from "./Component/Epupdatetoon";
 
 function App() {
   return (
@@ -26,7 +33,17 @@ function App() {
         <Route path="storyupdate/:id" element={<Storyupdate />} />
         <Route path="fictionpage" element={<Fictionpage />} />
         <Route path="cartoonpage" element={<Cartoonpage />} />
+        <Route path="episodefiction" element={<Episodefictionpage />} />
+        <Route path="episodecartoon" element={<Episodecartoonpage />} />
+        <Route path="listpage" element={<Episodelistpage />} />
+        <Route path="epficcreate" element={<Epficcreate />} />
+        <Route path="eptooncreate" element={<Eptooncreate />} />
+        <Route path="epupdatefic" element={<Epupdatefic />} />
+        <Route path="epupdatetoon" element={<Epupdatetoon />} />
       </Routes>
+
+      
+      
     </div>
   );
 }

@@ -83,6 +83,7 @@ function Createpage() {
       redirect: "follow",
     };
 
+
     // navigate("/workpage");
 
     // fetch("http://127.0.0.1:3500/works", requestOptions)
@@ -129,9 +130,34 @@ function Createpage() {
   };
 
   const Backto = () => {
-    navigate("/main_page");
+    // ตรวจสอบว่าแต่ละฟิลด์มีค่าหรือไม่
+    const hasTitle = title !== "";
+    const hasStatus = status !== "";
+    const hasIntro = intro !== "";
+    const hasTagline = tagline !== "";
+    const hasCategory = category !== "";
+    const hasType = type !== "";
+  
+    // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
+    if (hasTitle || hasStatus || hasIntro || hasTagline || hasCategory || hasType) {
+      Swal.fire({
+        title: "ต้องการย้อนกลับหรือไม่",
+        text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        // ถ้ากดยืนยัน ให้ไปหน้าหลัก
+        if (result.value) {
+          navigate("/main_page");
+        }
+      });
+    }
   };
-
+  
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}

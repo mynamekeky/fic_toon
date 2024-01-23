@@ -116,6 +116,10 @@ function Workpage() {
     navigate("/createpage");
   };
 
+  const listpage = () => {
+    navigate("/listpage");
+  };
+
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
@@ -223,7 +227,7 @@ function Workpage() {
                       <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
                           <img
-                            className="w-20 h-24 rounded-xl"
+                            className="w-20 h-24 rounded-xl cursor-pointer"
                             onClick={() => Storypage(row.id)}
                             src={`../img/work/` + row.picture}
                             width={75}
@@ -238,7 +242,7 @@ function Workpage() {
                         <td class="px-6 py-4 whitespace-nowrap text-center text-gray-800 dark:text-gray-200">
                           <div class="px-6 py-3">
                             {row.type == "CARTOON" ? (
-                              <span class="py-1 px-2 inline-flex items-center gap-x-1 text-base font-bold w-25 text-white bg-info rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                              <span class="py-1 px-2 inline-flex items-center gap-x-1 text-base font-bold w-25 text-white bg-sec rounded-full dark:bg-teal-500/10 dark:text-teal-500">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="16"
@@ -253,7 +257,7 @@ function Workpage() {
                                 {row.type}
                               </span>
                             ) : (
-                              <span class="py-1 px-2 inline-flex items-center gap-x-1 text-base font-bold w-25 bg-sec text-white rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                              <span class="py-1 px-2 inline-flex items-center gap-x-1 text-base font-bold w-25 bg-info text-white rounded-full dark:bg-teal-500/10 dark:text-teal-500">
                                 <svg
                                   width="17"
                                   height="16"
@@ -294,6 +298,7 @@ function Workpage() {
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
                             type="button"
+                            onClick={listpage}
                             class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-pass text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
                             รายการ

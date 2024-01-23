@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "./Storypage.css"
 import Navbar from "./Navbar";
+import Episode from "./Episode";
 
 function Storypage() {
   // Accepting `id` as a prop
@@ -82,17 +83,17 @@ function Storypage() {
                 src={`../img/work/` + story.picture}
                 width={224}
                 height={299}
-                className="border rounded-lg w-full mb-4  h-72"
+                className="border rounded-lg  mb-4 h-72 w-56"
               ></img>
 
               <label>
-                <p className="text-xl font-bold border rounded-lg px-4 py-3 text-center">{user.name}</p>
+                <p className="text-xl font-bold border rounded-lg px-4 py-3 w-56 text-center">{user.name}</p>
               </label>
             </div>
 
             <div className="col-start-6 col-end-13">
               <label >
-                <div className="mb-4">
+              <div className="mb-4">
                   <p className="text-lg font-bold">ชื่อเรื่อง</p>
                   <p className="border rounded-lg px-4 py-3">{story.title}</p>
                 </div>
@@ -131,10 +132,12 @@ function Storypage() {
           <div>
             <label>
               <p className="text-2xl font-bold">แนะนำเรื่อง</p>
-              <div className="border rounded-lg px-4 py-3.5 h-60" dangerouslySetInnerHTML={{__html: story.intro}}></div>
+              <div className="border rounded-lg px-4 py-3.5 h-auto" dangerouslySetInnerHTML={{__html: story.intro}}></div>
               {/* <p className="border rounded-lg px-4 py-3.5 h-60">{story.intro}</p> */}
             </label>
           </div>
+
+          <Episode/>
         </div>
       </div>
     </div>

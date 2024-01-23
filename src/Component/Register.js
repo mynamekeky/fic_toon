@@ -169,7 +169,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">นามปากกา</p>
+            <p className="my-3 text-lg font-bold">นามปากกา <a className="text-danger">*</a></p>
             <div class="relative">
               <input
                 class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
@@ -200,7 +200,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">อีเมล</p>
+            <p className="my-3 text-lg font-bold">อีเมล <a className="text-danger">*</a></p>
             <div class="relative">
               <input
                 class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
@@ -232,7 +232,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">ชื่อผู้ใช้</p>
+            <p className="my-3 text-lg font-bold">ชื่อผู้ใช้ <a className="text-danger">*</a></p>
             <div class="relative">
               <input
                 class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
@@ -264,7 +264,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">รหัสผ่าน</p>
+            <p className="my-3 text-lg font-bold" >รหัสผ่าน <a className="text-danger">*</a></p>
             <div class="relative">
               <input
                 class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
@@ -296,7 +296,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">ยืนยันรหัสผ่าน</p>
+            <p className="my-3 text-lg font-bold">ยืนยันรหัสผ่าน <a className="text-danger">*</a></p>
             <div class="relative">
               <input
                 class="peer font-normal shadow text-lg py-3 px-4 ps-11 block w-full text-gray-600 leading-tight border rounded-lg"
@@ -327,7 +327,7 @@ function Register() {
           </label>
 
           <label className="">
-            <p className="my-3 text-lg font-bold">บทบาท</p>
+            <p className="my-3 text-lg font-bold">บทบาท <a className="text-danger">*</a></p>
             <div className="flex gap-6">
               <input
                 className="accent-primary "
