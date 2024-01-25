@@ -35,9 +35,9 @@ function App() {
         <Route path="cartoonpage" element={<Cartoonpage />} />
         <Route path="episodefiction" element={<Episodefictionpage />} />
         <Route path="episodecartoon" element={<Episodecartoonpage />} />
-        <Route path="listpage" element={<Episodelistpage />} />
+        <Route path="listpage/:id" element={<Episodelistpage />} />
         <Route path="epficcreate" element={<Epficcreate />} />
-        <Route path="eptooncreate" element={<Eptooncreate />} />
+        <Route path="eptooncreate/:id" element={<Eptooncreate />} />
         <Route path="epupdatefic" element={<Epupdatefic />} />
         <Route path="epupdatetoon" element={<Epupdatetoon />} />
       </Routes>

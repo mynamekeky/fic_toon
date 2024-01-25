@@ -1,8 +1,90 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import Navbarread from "./Navbarread";
+import Navbarcreator from "./Navbarceartor";
+import { useParams } from "react-router-dom";
 
 function Episodelistpage() {
 
+  const { id } = useParams();
+
+  const [items, setItems] = useState([]);
+
   const navigate = useNavigate();
+
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [user, setUser] = useState([]);
+
+  const [list, setList] = useState({})
+
+  useEffect(() => {
+    UserGet();
+  }, []);
+
+  const UserGet = () => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 200) {
+          setUser(result.user);
+          setIsLoaded(false);
+        } else if (result.message === "Unauthorized") {
+          Swal.fire({
+            text: "กรุณา Login",
+            icon: "error",
+          }).then((value) => {
+            navigate("/login");
+          });
+        }
+        console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+
+    // fetch("http://127.0.0.1:3500/espisodes/findByWorkId/84", requestOptions)
+    //   .then((res) => res.json())
+    //   .then((result) => {
+    //     console.log(result);
+    //     setItems(result);
+    //   });
+  };
+
+  useEffect(() => {
+    const fetchList = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const headers = new Headers({
+          Authorization: `Bearer ${token}`,
+        });
+
+        const response = await fetch(`http://127.0.0.1:3500/espisodes/findByWorkId/${id}`, {
+          method: "GET",
+          headers,
+        });
+
+        const result = await response.json();
+        setItems(result); // Set the fetched episodes to the items state
+      } catch (error) {
+        console.error("Error fetching story:", error);
+      }
+    };
+
+    fetchList();
+  }, [id]);
+
+  const Createp = (id) => {
+    window.location = "/eptooncreate/" + id;
+  };
 
   const createfic = () => {
     navigate("/epficcreate");
@@ -42,7 +124,7 @@ function Episodelistpage() {
           </p>
           <div class="sm:order-3 flex items-center gap-x-2">
             <button
-            onClick={createtoon}
+            onClick={() => Createp(id)}
               type="button"
               class="py-2 px-3 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-pass text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             >
@@ -108,17 +190,18 @@ function Episodelistpage() {
                   </thead>
 
                   <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  {items.map((row) => (
                     <tr>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                         <a>1</a>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                        <a>นัดรัก</a>
+                        <a>{row.title}</a>
                       </td>
 
 
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                        <a className="border rounded-2xl bg-pass">เผยแพร่</a>
+                        <a className="border rounded-2xl bg-pass">{row.status}</a>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
@@ -141,7 +224,7 @@ function Episodelistpage() {
 
                       
                     </tr>
-
+                    ))}
                   </tbody>
                 </table>
               </div>

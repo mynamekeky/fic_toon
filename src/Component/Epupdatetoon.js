@@ -1,6 +1,89 @@
+import './Eptooncreate.css'
+import React, {useState, useRef, useEffect} from 'react';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useNavigate } from "react-router-dom";
+import Navbarread from "./Navbarread";
+import Navbarcreator from "./Navbarceartor";
+
 function Epupdatetoon(){
+
+  const navigate = useNavigate();
+
+  const MySwal = withReactContent(Swal);
+
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [user, setUser] = useState([]);
+
+  const [images, setImages]   = useState([]);
+  const [isDragging, setisDragging] = useState(false);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 200) {
+          setUser(result.user);
+          setIsLoaded(false);
+        } else if (result.message === "Unauthorized") {
+          Swal.fire({
+            text: "กรุณา Login",
+            icon: "error",
+          }).then((value) => {
+            navigate("/login");
+          });
+        }
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  function selectFiles(){
+    fileInputRef.current.click();
+  }
+
+  function onFileSelect(event){
+    const files = event.target.files;
+    if(fileInputRef.length === 0)return;
+    for (let i = 0; i < files.length; i++){
+      if(files[i].type.split('/')[0] !== 'image') continue;
+      if(!images.some((e)=> e.name === files[i].name)){
+        setImages((prevImages) => [
+          ...prevImages,
+          {
+            name: files[i].name,
+            url: URL.createObjectURL(files[i]),
+          },
+        ]);
+      }
+    }
+  }
+
+  function deleteImage(index){
+    setImages((prevImages) => 
+      prevImages.filter((_, i) =>i !== index)
+    );
+  }
     return(
         <div>
+
+{user.role === "MEMBER" && <Navbarread />}
+      {user.role === "CREATOR" && <Navbarcreator />}
       <div>
         <form>
           <div>
@@ -8,9 +91,38 @@ function Epupdatetoon(){
             <input type="text"></input>
           </div>
 
-          <div>
-            <div>เนื้อหา</div>
-            <input type="file"></input>
+          <div className="card">
+            <div className="top">
+              <p>Drag & Drop image uploading</p>
+            </div>
+            <div className="drag-area">
+              {isDragging ? (
+                <span className="select">Drop Image Here</span>
+              ) : (
+                <>
+                Drag & Drop image here or {" "}
+              <span className="select" role='button' onClick={selectFiles}>
+                Browse
+              </span>
+                </>
+              )}
+
+              <input name="file" type="file" className="file" multiple ref={fileInputRef} onChange={onFileSelect}></input>
+            </div>
+            <div className="container">
+              {images.map((images,index) => (
+                <div className="image" key={index}>
+                <span className="delete" onClick={() => deleteImage(index)}>&times;</span>
+                <img src={images.url} alt={images.name}/>
+              </div>
+              ))}
+              
+              
+            </div>
+            <button type="button">
+              Upload
+
+            </button>
           </div>
 
           <div>

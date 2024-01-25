@@ -13,6 +13,7 @@ function Createpage() {
   const navigate = useNavigate();
 
   const MySwal = withReactContent(Swal);
+  
 
   const [title, setTitle] = useState("");
   const [file, setFile] = useState({ preview: "", data: "" });
@@ -83,16 +84,6 @@ function Createpage() {
       redirect: "follow",
     };
 
-
-    // navigate("/workpage");
-
-    // fetch("http://127.0.0.1:3500/works", requestOptions)
-    //   .then((response) => response.json())
-    // .then((result) => {
-    //   if (result.status === 200) {
-    //     navigate("/workpage");
-    //   }
-    //   }).catch((error) => console.log("error", error));
 
     fetch("http://127.0.0.1:3500/works", requestOptions)
       .then((response) => response.json())

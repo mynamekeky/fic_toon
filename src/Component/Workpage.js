@@ -59,6 +59,10 @@ function Workpage() {
     window.location = "/storyupdate/" + id;
   };
 
+  const UserList = (id) => {
+    window.location = "/listpage/" + id;
+  };
+
   const UserDelete = (id) => {
     const token = localStorage.getItem("token");
     var myHeaders = new Headers();
@@ -105,6 +109,10 @@ function Workpage() {
 
   const Storypage = (id) => {
     window.location = "/storypage/" + id;
+  };
+
+  const Listpage = (id) => {
+    window.location = "/listpage/" + id;
   };
 
   const logout = () => {
@@ -298,7 +306,7 @@ function Workpage() {
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
                             type="button"
-                            onClick={listpage}
+                            onClick={() => Listpage(row.id)}
                             class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-pass text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
                             รายการ
