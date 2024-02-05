@@ -5,19 +5,57 @@ import Navbarread from "./Navbarread";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import "./Storypage.css"
+import "./Storypage.css";
 import Navbar from "./Navbar";
-import Episode from "./Episode";
+import Character from "./Character/Character";
 
 function Storypage() {
+
+  
   // Accepting `id` as a prop
   const { id } = useParams();
+  const { workId } = useParams();
   const [isLoaded, setIsLoaded] = useState(true);
   const [user, setUser] = useState([]);
   const [story, setStory] = useState({}); // State for story data
 
+  const [episode, setEpisode] = useState([]);
+
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Authorization", "Bearer " + token);
+
+  //   var requestOptions = {
+  //     method: "GET",
+  //     headers: myHeaders,
+  //     redirect: "follow",
+  //   };
+
+  //   fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       if (result.status === 200) {
+  //         setUser(result.user);
+  //         setIsLoaded(false);
+  //       }
+  //       console.log(result);
+  //     })
+  //     .catch((error) => console.log("error", error));
+
+  //   fetch(http://127.0.0.1:3500/espisodes/findByWorkId/${id}, requestOptions)
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       setEpisode(result);
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // }, []);
+
+  
 
   useEffect(() => {
     // alert(id);
@@ -44,7 +82,30 @@ function Storypage() {
         console.log(result);
       })
       .catch((error) => console.log("error", error));
+
   }, []);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`http://127.0.0.1:3500/espisodes/findByWorkId/${id}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setEpisode(result);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
+
 
   useEffect(() => {
     const fetchStory = async () => {
@@ -70,8 +131,17 @@ function Storypage() {
     fetchStory();
   }, [id]);
 
+  const eps = (epId) => {
+    window.location = `/epstory/${id}/` + epId;
+  };
+
+  const Eptoon = () => {
+    navigate("/episodecartoon");
+  };
+
   return (
     <div>
+      <h1>555555555</h1>
       {!user.role && <Navbar />}
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
@@ -87,42 +157,41 @@ function Storypage() {
               ></img>
 
               <label>
-                <p className="text-xl font-bold border rounded-lg px-4 py-3 w-56 text-center">{user.name}</p>
+                <p className="text-xl font-bold border rounded-lg px-4 py-3 w-56 text-center">
+                  {user.name}
+                </p>
               </label>
             </div>
 
             <div className="col-start-6 col-end-13">
-              <label >
-              <div className="mb-4">
+              <label>
+                <div className="mb-4">
                   <p className="text-lg font-bold">ชื่อเรื่อง</p>
                   <p className="border rounded-lg px-4 py-3">{story.title}</p>
                 </div>
-                
               </label>
 
               <label>
-              <div className="mb-4">
-                <p className="text-lg font-bold">คำโปรย</p>
-                <p className="border rounded-lg px-4 py-3 h-24">
-                  {story.tagline}
-                </p>
+                <div className="mb-4">
+                  <p className="text-lg font-bold">คำโปรย</p>
+                  <p className="border rounded-lg px-4 py-3 h-24">
+                    {story.tagline}
+                  </p>
                 </div>
               </label>
 
               <label>
-              <div className="mb-4">
-                <p className="text-lg font-bold">หมวดหมู่</p>
-                <p className="border rounded-lg px-4 py-3">{story.category}</p>
+                <div className="mb-4">
+                  <p className="text-lg font-bold">หมวดหมู่</p>
+                  <p className="border rounded-lg px-4 py-3">
+                    {story.category}
+                  </p>
                 </div>
               </label>
 
               <label className="grid grid-flow-col justify-stretch">
-                <div className="text-lg font-bold ">
-                  ประเภท
-                </div>
-                <div className="text-lg font-bold">
-                  {story.type}
-                </div>
+                <div className="text-lg font-bold ">ประเภท</div>
+                <div className="text-lg font-bold">{story.type}</div>
               </label>
             </div>
           </div>
@@ -132,12 +201,78 @@ function Storypage() {
           <div>
             <label>
               <p className="text-2xl font-bold">แนะนำเรื่อง</p>
-              <div className="border rounded-lg px-4 py-3.5 h-auto" dangerouslySetInnerHTML={{__html: story.intro}}></div>
+              <div
+                className="border rounded-lg px-4 py-3.5 h-auto"
+                dangerouslySetInnerHTML={{ __html: story.intro }}
+              ></div>
               {/* <p className="border rounded-lg px-4 py-3.5 h-60">{story.intro}</p> */}
             </label>
           </div>
+        </div>
 
-          <Episode/>
+        <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+        <Character data={id}/>
+
+        <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+        <div>
+          <div className="text-2xl font-bold">ตอนทั้งหมด</div>
+
+          <div>
+            <div class="flex flex-col">
+              <div class="-m-1.5 overflow-x-auto">
+                <div class="p-1.5 min-w-full inline-block align-middle">
+                  <div class="border rounded-lg shadow overflow-hidden dark:border-gray-700 dark:shadow-gray-900">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                      <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-4 py-3 text-start w-20 text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
+                          >
+                            ตอนที่
+                          </th>
+
+                          <th
+                            scope="col"
+                            class="px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
+                          >
+                            ชืื่อตอน
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {episode
+                          .filter(
+                            (item) =>
+                              item.status === "public"
+                          )
+                          .map((ep) => (
+                            <tr>
+                              <td
+                                onClick={() => eps(ep.id)}
+                                class="cursor-pointer px-6 py-4 whitespace-nowrap text-base  font-medium text-gray-800 dark:text-gray-200"
+                              >
+                                1
+                              </td>
+
+                              <td
+                                onClick={() => eps(ep.id)}
+                                class="cursor-pointer px-6 py-4 whitespace-nowrap text-base font-medium text-gray-800 dark:text-gray-200"
+                              >
+                                {ep.title}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

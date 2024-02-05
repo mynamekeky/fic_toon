@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import Navbarread from "./Navbarread";
 import Navbarcreator from "./Navbarceartor";
 import { useParams } from "react-router-dom";
+import Charupdate from "./Character/Charupdate";
+import Charcreate from "./Character/Charcreate";
 
 function Storyupdate() {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ function Storyupdate() {
   const [story, setStory] = useState({}); // State for story data
 
   const MySwal = withReactContent(Swal);
-
+  const [character, setCharacter] = useState([]);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState({ preview: "", data: "" });
   const [tagline, setTagline] = useState("");
@@ -38,7 +40,6 @@ function Storyupdate() {
     })
       .then((response) => response.json())
       .then((storyData) => {
-        // console.log(storyData);
         setStory(storyData);
         setTitle(storyData.title);
         setTagline(storyData.tagline);
@@ -47,6 +48,7 @@ function Storyupdate() {
         setIntro({ old: storyData.intro });
         setStatus(storyData.status);
         setFile({ data: storyData.picture });
+        setCharacter(storyData.characters);
       })
       .catch((error) => console.log("error", error));
   }, [id]);
@@ -105,17 +107,6 @@ function Storyupdate() {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + token);
 
-    // const raw = JSON.stringify({
-    //   id, // Include the story ID in the request
-    //   title,
-    //   picture: file.data, // Use the selected file data
-    //   tagline,
-    //   type,
-    //   category,
-    //   intro,
-    //   status,
-    // });
-
     var formdata = new FormData();
     formdata.append("file", file.data);
     formdata.append("title", title);
@@ -160,7 +151,6 @@ function Storyupdate() {
     console.log(img);
     setFile(img);
   };
-
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
@@ -179,13 +169,16 @@ function Storyupdate() {
     navigate("/workpage");
   };
 
+  console.log(character);
+  console.log(id);
+
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
 
       <form
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         className="w-6/12 m-auto container mx-auto  "
       >
         <div className="border rounded-lg bg-white px-12">
@@ -206,10 +199,24 @@ function Storyupdate() {
                   className="border rounded-lg w-full mb-4 h-72"
                 ></img>
               )}
-              <input
+              {/* <input
                 type="file"
                 name="file"
                 className="flex "
+                onChange={handleFile}
+              /> */}
+
+              <label
+                for="file"
+                class="bg-white border py-3.5 px-4 mt-5 w-full text-center font-bold rounded-lg cursor-pointer "
+              >
+                <p>อัพโหลดรูปภาพ</p>
+              </label>
+              <input
+                className="invisible "
+                type="file"
+                id="file"
+                name="file"
                 onChange={handleFile}
               />
             </div>
@@ -329,7 +336,7 @@ function Storyupdate() {
 
           <div className="flex justify-center pt-8 pb-12">
             <Editor
-              apiKey="your-api-key"
+              apiKey="b0cflehrofjbs4hfxcodrxozkigdl4o2lbnvpvoi0q9r34lv"
               id="editorWork"
               onInit={(evt, editor) => (editorRef.current = editor)}
               placeholder="พิมพ์ข้อความ....."
@@ -371,6 +378,10 @@ function Storyupdate() {
               }}
             />
           </div>
+
+          <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+          <div>{character.length < 1 ? <Charcreate data={id} /> : <Charupdate data={id} />}</div>
         </div>
 
         <div className="flex justify-around gap-7 mt-6 mb-20">
@@ -397,6 +408,7 @@ function Storyupdate() {
           <button
             type="submit"
             className=" w-full inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            onClick={handleSubmit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -412,6 +424,11 @@ function Storyupdate() {
           </button>
         </div>
       </form>
+      {/* <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+      <div>
+        {character.length < 1 ? <Charcreate data={id} /> : <Charupdate />}
+      </div> */}
     </div>
   );
 }

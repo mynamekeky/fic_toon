@@ -55,13 +55,25 @@ function Workpage() {
       });
   };
 
+
+  
+
   const UserUpdate = (id) => {
     window.location = "/storyupdate/" + id;
   };
 
-  const UserList = (id) => {
-    window.location = "/listpage/" + id;
-  };
+  // const UserList = (id) => {
+  //   window.location = "/listpage/" + id;
+  // };
+
+  // const logout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/");
+  // };
+
+  // const listpage = () => {
+  //   navigate("/listpage");
+  // };
 
   const UserDelete = (id) => {
     const token = localStorage.getItem("token");
@@ -115,18 +127,12 @@ function Workpage() {
     window.location = "/listpage/" + id;
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   const create = () => {
     navigate("/createpage");
   };
 
-  const listpage = () => {
-    navigate("/listpage");
-  };
+  
 
   return (
     <div>

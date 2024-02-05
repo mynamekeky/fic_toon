@@ -8,12 +8,12 @@ import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import Navbarread from "./Navbarread";
 import Navbarcreator from "./Navbarceartor";
+import Charcreate from "./Character/Charcreate";
 
 function Createpage() {
   const navigate = useNavigate();
 
   const MySwal = withReactContent(Swal);
-  
 
   const [title, setTitle] = useState("");
   const [file, setFile] = useState({ preview: "", data: "" });
@@ -84,7 +84,6 @@ function Createpage() {
       redirect: "follow",
     };
 
-
     fetch("http://127.0.0.1:3500/works", requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -128,9 +127,16 @@ function Createpage() {
     const hasTagline = tagline !== "";
     const hasCategory = category !== "";
     const hasType = type !== "";
-  
+
     // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
-    if (hasTitle || hasStatus || hasIntro || hasTagline || hasCategory || hasType) {
+    if (
+      hasTitle ||
+      hasStatus ||
+      hasIntro ||
+      hasTagline ||
+      hasCategory ||
+      hasType
+    ) {
       Swal.fire({
         title: "ต้องการย้อนกลับหรือไม่",
         text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
@@ -148,7 +154,7 @@ function Createpage() {
       });
     }
   };
-  
+
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
@@ -296,10 +302,24 @@ function Createpage() {
                 </label>
               )}
 
-              <input
+              {/* <input
                 type="file"
                 name="file"
                 className="flex "
+                onChange={handleFile}
+              /> */}
+
+              <label
+                for="file"
+                class="bg-white border py-3.5 px-4 mt-5 w-full text-center font-bold rounded-lg cursor-pointer "
+              >
+                <p>อัพโหลดรูปภาพ</p>
+              </label>
+              <input
+                className="invisible "
+                type="file"
+                id="file"
+                name="file"
                 onChange={handleFile}
               />
             </div>
@@ -415,7 +435,7 @@ function Createpage() {
 
           <div className="flex justify-center pt-8 pb-12">
             <Editor
-              apiKey="your-api-key"
+              apiKey="b0cflehrofjbs4hfxcodrxozkigdl4o2lbnvpvoi0q9r34lv"
               onInit={(evt, editor) => (editorRef.current = editor)}
               initialValue=""
               placeholder="พิมพ์ข้อความ....."
@@ -453,6 +473,12 @@ function Createpage() {
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
+          </div>
+
+          <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+          <div>
+            {/* <Charcreate /> */}
           </div>
         </div>
 

@@ -18,6 +18,8 @@ import Epficcreate from "./Component/Epficcreat";
 import Eptooncreate from "./Component/Eptooncreate";
 import Epupdatefic from "./Component/Epupdatefic";
 import Epupdatetoon from "./Component/Epupdatetoon";
+import Epstory from "./Component/Epstory";
+import Characterpage from "./Component/Character/Characterpage";
 
 function App() {
   return (
@@ -39,7 +41,9 @@ function App() {
         <Route path="epficcreate" element={<Epficcreate />} />
         <Route path="eptooncreate/:id" element={<Eptooncreate />} />
         <Route path="epupdatefic" element={<Epupdatefic />} />
-        <Route path="epupdatetoon" element={<Epupdatetoon />} />
+        <Route path="epupdatetoon/:work/:id" element={<Epupdatetoon />} />
+        <Route path="epstory/:work/:id" element={<Epstory />} />
+        <Route path="character" element={<Characterpage />} />
       </Routes>
 
       

@@ -23,6 +23,10 @@ function Navbar() {
   const Homepage = () => {
     navigate("/");
   };
+
+  const character = () => {
+    navigate("/character");
+  };
   
   return (
     <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white shadow-md py-5 px-5 mb-10">
@@ -47,7 +51,7 @@ function Navbar() {
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={Homepage}>หน้าหลัก</a>
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={fiction}>นวนิยาย</a>
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={cartoon}>การ์ตูน</a>
-              <a class="text-xl font-bold  text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">ตัวละคร</a>
+              <a class="text-xl font-bold  text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={character}>ตัวละคร</a>
             </div>
           </div>
       </nav>

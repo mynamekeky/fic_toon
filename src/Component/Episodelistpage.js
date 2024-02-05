@@ -6,7 +6,6 @@ import Navbarcreator from "./Navbarceartor";
 import { useParams } from "react-router-dom";
 
 function Episodelistpage() {
-
   const { id } = useParams();
 
   const [items, setItems] = useState([]);
@@ -16,10 +15,11 @@ function Episodelistpage() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [user, setUser] = useState([]);
 
-  const [list, setList] = useState({})
+  const [list, setList] = useState({});
 
   useEffect(() => {
     UserGet();
+    
   }, []);
 
   const UserGet = () => {
@@ -51,12 +51,6 @@ function Episodelistpage() {
       })
       .catch((error) => console.log("error", error));
 
-    // fetch("http://127.0.0.1:3500/espisodes/findByWorkId/84", requestOptions)
-    //   .then((res) => res.json())
-    //   .then((result) => {
-    //     console.log(result);
-    //     setItems(result);
-    //   });
   };
 
   useEffect(() => {
@@ -67,10 +61,13 @@ function Episodelistpage() {
           Authorization: `Bearer ${token}`,
         });
 
-        const response = await fetch(`http://127.0.0.1:3500/espisodes/findByWorkId/${id}`, {
-          method: "GET",
-          headers,
-        });
+        const response = await fetch(
+          `http://127.0.0.1:3500/espisodes/findByWorkId/${id}`,
+          {
+            method: "GET",
+            headers,
+          }
+        );
 
         const result = await response.json();
         setItems(result); // Set the fetched episodes to the items state
@@ -82,8 +79,54 @@ function Episodelistpage() {
     fetchList();
   }, [id]);
 
+  const UserDelete = (id) => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    Swal.fire({
+      title: "ยืนยันการลบข้อมูลหรือไม่",
+      text: "หากคุณยืนยัน ข้อมูลทั้งถูกจะถูกลบ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "ลบ",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      // Proceed with deletion only if confirmed
+      if (result.isConfirmed) {
+        fetch(`http://127.0.0.1:3500/espisodes/${id}`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.status === 200) {
+              Swal.fire({
+                title: "ลบข้อมูลเสร็จสิ้น!",
+                text: "ผลงานถูกลบเรียบร้อย",
+                icon: "success",
+              });
+              UserGet();
+              
+            }window.location.reload();
+          })
+          .catch((error) => console.log("error", error));
+      }
+    });
+  };
+
   const Createp = (id) => {
     window.location = "/eptooncreate/" + id;
+  };
+
+  const Updateep = (epId) => {
+    window.location = `/epupdatetoon/${id}/` + epId;
   };
 
   const createfic = () => {
@@ -102,7 +145,10 @@ function Episodelistpage() {
     navigate("/epupdatetoon");
   };
   return (
-    <div className="w-9/12 m-auto">
+    <div>
+      {user.role === "MEMBER" && <Navbarread />}
+      {user.role === "CREATOR" && <Navbarcreator />}
+      <div className="w-9/12 m-auto">
       <div className=" bg-white text-sm py-4 dark:bg-gray-800 mb-8 border rounded-lg">
         <div
           class="max-w-[85rem] w-full mx-auto  flex flex-wrap basis-full items-center justify-between"
@@ -124,7 +170,7 @@ function Episodelistpage() {
           </p>
           <div class="sm:order-3 flex items-center gap-x-2">
             <button
-            onClick={() => Createp(id)}
+              onClick={() => Createp(id)}
               type="button"
               class="py-2 px-3 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-pass text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             >
@@ -158,72 +204,78 @@ function Episodelistpage() {
                     <tr>
                       <th
                         scope="col"
-                        class="w-20 px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                        class="w-20 px-4 py-3 text-start text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
                       >
                         ตอนที่
                       </th>
                       <th
                         scope="col"
-                        class="w-8/12 px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                        class="w-8/12 px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
                       >
                         ชื่อตอน
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                        class="px-6 py-3 text-start text-xl font-bold  text-gray-500 uppercase dark:text-gray-400"
                       >
                         สถานะ
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                        class="px-6 py-3 text-end text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
                       >
                         แก้ไข
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                        class="px-6 py-3 text-end text-xl font-bold text-gray-500 uppercase dark:text-gray-400"
                       >
                         ลบ
                       </th>
                     </tr>
                   </thead>
 
-                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                  {items.map((row) => (
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                        <a>1</a>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                        <a>{row.title}</a>
-                      </td>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white">
+                    {items.map((row) => (
+                      <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">
+                          <a>1</a>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">
+                          <a>{row.title}</a>
+                        </td>
 
+                        <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">
+                        {row.status == "hidden" ? (
+                              <h3 class="text-lg font-bold text-white bg-grey rounded-full py-1 px-3 inline-flex items-center gap-x-1">
+                                {row.status}
+                              </h3>
+                            ) : (
+                              <h3 class="text-lg font-bold text-white bg-pass rounded-full py-1 px-3 inline-flex items-center gap-x-1">
+                                {row.status}
+                              </h3>
+                            )}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                          <button
+                            onClick={() => Updateep(row.id)}
+                            type="button"
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                          >
+                            แก้ไช
+                          </button>
+                        </td>
 
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                        <a className="border rounded-2xl bg-pass">{row.status}</a>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                        <button
-                          onClick={updatetoon}
-                          type="button"
-                          class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                        >
-                          แก้ไช
-                        </button>
-                      </td>
-
-                      <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                        <button
-                          type="button"
-                          class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                        >
-                          Delete
-                        </button>
-                      </td>
-
-                      
-                    </tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                          <button
+                            onClick={() => UserDelete(row.id)} 
+                            type="button"
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -233,6 +285,8 @@ function Episodelistpage() {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }
 

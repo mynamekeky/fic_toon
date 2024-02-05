@@ -70,7 +70,9 @@ function Navbarcreator(){
         navigate("/main_page");
       };
 
-  
+      const character = () => {
+        navigate("/character");
+      };
       
 
 return(
@@ -120,7 +122,7 @@ return(
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#"  onClick={main_page}>หน้าหลัก</a>
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={fiction}>นวนิยาย</a>
               <a class="text-xl font-bold text-gray-800 hover:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={cartoon}>การ์ตูน</a>
-              <a class="text-xl font-bold  text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">ตัวละคร</a>
+              <a class="text-xl font-bold  text-gray-800 hover:text-gray-400  dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" onClick={character}>ตัวละคร</a>
             </div>
           </div>
       </nav>

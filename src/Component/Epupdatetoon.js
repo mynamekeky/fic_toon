@@ -1,23 +1,43 @@
-import './Eptooncreate.css'
-import React, {useState, useRef, useEffect} from 'react';
+// import "./Eptooncreate.css";
+import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import Navbarread from "./Navbarread";
 import Navbarcreator from "./Navbarceartor";
+import { useParams } from "react-router-dom";
+import { Editor } from "@tinymce/tinymce-react";
+import { createElement } from "react";
 
-function Epupdatetoon(){
+import FormData from "form-data";
 
+function Epupdatetoon() {
+  const { id, work } = useParams();
   const navigate = useNavigate();
-
+  // const [intro, setIntro] = useState("");
+  const [list, setList] = useState({});
   const MySwal = withReactContent(Swal);
-
   const [isLoaded, setIsLoaded] = useState(true);
   const [user, setUser] = useState([]);
-
-  const [images, setImages]   = useState([]);
+  const [type, setType] = useState([]);
+  const [images, setImages] = useState({ data: [] });
+  const [updateImages, setUpdateImages] = useState([]);
   const [isDragging, setisDragging] = useState(false);
   const fileInputRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [files, setFiles] = useState([]);
+
+  // const [contenttext, setContenttext] = useState("");
+  const [contenttext, setContenttext] = useState({ old: "", new: "" });
+  const [status, setStatus] = useState("");
+  const [works, setWorks] = useState();
+  const [items, setItems] = useState([]);
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,150 +66,463 @@ function Epupdatetoon(){
         }
       })
       .catch((error) => console.log("error", error));
-  }, []);
+
+    fetch(`http://127.0.0.1:3500/works/${work}`, requestOptions)
+      .then((res) => res.json())
+      .then((result) => {
+        setWorks(result);
+        // console.log(works)
+      });
+
+    fetch(`http://127.0.0.1:3500/espisodes/${id}`, requestOptions)
+      .then((res) => res.json())
+      .then((items) => {
+        setItems(items);
+        setTitle(items.title);
+        setContenttext({ old: items.contentText });
+        setStatus(items.status);
+        // console.log(items.pictures.length > 0);
+        if (items.pictures.length > 0) {
+          const data = items.pictures.map((item) => {
+            return { name: item.picture, id: item.id };
+          });
+
+          // console.log(dataa);
+          setImages({
+            data: data,
+          });
+
+          console.log(images);
+        }
+        // if (items.pictures.length > 0) {
+        //   for (let i = 0; i < items.pictures.length; i++) {
+        //     console.log(items.pictures[i])
+        // setImages([
+        //   {
+        //     name: items.pictures[i],
+        //   },
+        // ]);
+        //   }
+        //   console.log(images);
+        // }
+      });
+  }, [id]);
+
+  const statusCheck = document.getElementById("statusCheckbox");
+  if (statusCheck) {
+    if (status === "public") {
+      statusCheck.checked = true;
+    }
+  }
+
+  const handleChange = (event) => {
+    const files = event.target.files;
+    setFiles(files);
+  };
+
+  const customFile = (e) => {
+    console.log(e);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    // formdata.append("workId", id);
+    formdata.append("title", title);
+    formdata.append("status", status);
+    // formdata.append("contentText", contenttext);
+
+    if (contenttext.new) {
+      formdata.append("contentText", contenttext.new);
+    } else {
+      formdata.append("contentText", contenttext.old);
+    }
+    let i = 0
+    const data = images.data.map((item) => {
+      if (item.url) {
+        formdata.append(`pictures[${i}][image]`, item.file);
+        if(item.id){
+          formdata.append(`pictures[${i}][id]`, item.id);
+        }
+        i = i + 1
+        return item
+      }
+    });
+    
+    var requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(`http://127.0.0.1:3500/espisodes/${id}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
 
-  function selectFiles(){
-    fileInputRef.current.click();
+  // function updateImg(e, index) {
+  //   const files = e.target.files[0];
+  //   const update = images.data.map((item, i) => {
+  //     if (i === index) {
+  //       const data = {
+  //         ...item,
+  //         file: files,
+  //         url: URL.createObjectURL(files),
+  //       };
+  //       return data;
+  //     } else {
+  //       // The rest haven't changed
+  //       return item;
+  //     }
+  //   });
+
+  //   console.log(update);
+  //   setImages({ data: update });
+  // }
+
+  function updateImg(e, index) {
+    const files = e.target.files[0];
+    const update = images.data.map((item, i) => {
+      if (i === index) {
+        const data = {
+          ...item,
+          file: files,
+          url: URL.createObjectURL(files),
+        };
+
+        console.log(data);
+        return data;
+      } else {
+        // The rest haven't changed
+        return item;
+      }
+    });
+
+    console.log(update);
+    setImages({ data: update });
   }
 
-  function onFileSelect(event){
-    const files = event.target.files;
-    if(fileInputRef.length === 0)return;
-    for (let i = 0; i < files.length; i++){
-      if(files[i].type.split('/')[0] !== 'image') continue;
-      if(!images.some((e)=> e.name === files[i].name)){
-        setImages((prevImages) => [
-          ...prevImages,
-          {
-            name: files[i].name,
-            url: URL.createObjectURL(files[i]),
-          },
-        ]);
-      }
+  function deleteImage(index, id) {
+    images.data.splice(index, 1);
+    setImages({ data: images.data });
+
+    if (id) {
+      var requestOptions = {
+        method: "DELETE",
+        redirect: "follow",
+      };
+
+      fetch(`http://127.0.0.1:3500/espisodes/deletePic/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
     }
   }
 
-  function deleteImage(index){
-    setImages((prevImages) => 
-      prevImages.filter((_, i) =>i !== index)
-    );
+  function deleteUpdateImage(index) {
+    updateImages.splice(index, 1);
+    console.log(updateImages.splice(index, 1));
+    setUpdateImages([...updateImages]);
   }
-    return(
-        <div>
 
-{user.role === "MEMBER" && <Navbarread />}
+  const handleClick = (e) => {
+    const files = e.target.files[0];
+    // images.data.push({ file: files, url: URL.createObjectURL(files) });
+    // console.log(files.name);
+    // const update = images.data.map((item) => {
+    //   if(!item.file & item.file !== files){
+    //     console.log({file: files, url: URL.createObjectURL(files)})
+    //   }
+    // });
+    // console.log(update);
+    setImages({
+      data: [...images.data, { file: files, url: URL.createObjectURL(files) }],
+    });
+    // console.log(updateImages);
+    console.log(images.data);
+  };
+
+  return (
+    <div>
+      {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
       <div>
-        <form>
-          <div>
-            <div>ชื่อตอน</div>
-            <input type="text"></input>
-          </div>
-
-          <div className="card">
-            <div className="top">
-              <p>Drag & Drop image uploading</p>
+        <form
+          className="w-6/12 m-auto container mx-auto  "
+          onSubmit={handleSubmit}
+        >
+          <div className="border rounded-lg bg-white px-12 py-12">
+            <div>
+              <div className="block text-xl font-bold mb-2 ">ชื่อตอน</div>
+              <input
+                className="w-full rounded-lg border-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+                value={title}
+                type="text"
+                placeholder="title"
+                onChange={(e) => setTitle(e.target.value)}
+              ></input>
             </div>
-            <div className="drag-area">
-              {isDragging ? (
-                <span className="select">Drop Image Here</span>
-              ) : (
-                <>
-                Drag & Drop image here or {" "}
-              <span className="select" role='button' onClick={selectFiles}>
-                Browse
-              </span>
-                </>
+
+            <div className="mt-16 border">
+              {
+                works?.type === "CARTOON" && (
+                  <div className="container">
+                    <div className="border p-5">
+                      <input type="file" name="file" onChange={handleClick} />
+                    </div>
+                    <div className="flex overflow-x-auto gap-4 px-11 pt-9">
+                      {images.data
+                        ? images.data.map((item, index) => (
+                            <div className="new-img" key={index}>
+                              <div>
+                                <span
+                                  className="delete font-bold text-4xl bg-white rounded-xl mt-3 text-danger py-0 px-3"
+                                  onClick={() => deleteImage(index, item?.id)}
+                                >
+                                  &times;
+                                </span>
+                                <label
+                                  for={`file-upload-${index}`}
+                                  class="w-56 h-72 rounded-xl cursor-pointer "
+                                >
+                                  <img
+                                    className="w-56 h-72 rounded-xl"
+                                    src={
+                                      item.file
+                                        ? item.url
+                                        : `../../img/work/` + item.name
+                                    }
+                                  />
+                                </label>
+                                <input
+                                  className="invisible "
+                                  type="file"
+                                  id={`file-upload-${index}`}
+                                  name="file"
+                                  onChange={(e) => updateImg(e, index)}
+                                />
+                              </div>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  </div>
+                )
+
+                // <div className="container">
+                //   <label
+                //     htmlFor="formFile"
+                //     className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+                //   >
+                //     Default file input example
+                //   </label>
+                //   <input
+                //     className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                //     type="file"
+                //     id="formFile"
+                //   />
+                // {images.data.map((item, index) => (
+                //   <div className="new-img" key={index}>
+                //     <img src={`../../img/work/` + item.name}></img>
+                //   </div>
+                // ))}
+                // </div>
+
+                // <div className="card">
+                //   <div className="top">
+                //     <p>Drag & Drop image uploading</p>
+                //   </div>
+                //   <div className="drag-area">
+                //     {isDragging ? (
+                //       <span className="select">Drop Image Here</span>
+                //     ) : (
+                //       <>
+                //         Drag & Drop image here or{" "}
+                //         <span
+                //           className="select"
+                //           role="button"
+                //           onClick={selectFiles}
+                //         >
+                //           Browse
+                //         </span>
+                //       </>
+                //     )}
+
+                //     <input
+                //       name="file"
+                //       type="file"
+                //       className="file"
+                //       multiple
+                //       ref={fileInputRef}
+                //       onChange={onFileSelect}
+                //     ></input>
+                //   </div>
+                //   <div className="container">
+                // {images.data.map((item, index) => (
+                //   <div className="image" key={index}>
+                //     <span
+                //       className="delete"
+                //       onClick={() => deleteImage(index)}
+                //     >
+                //       &times;
+                //     </span>
+                //     <img src={`../../img/work/` + item.name}></img>
+                //     {/* {updateImages.length > 1
+                //       ? updateImages.map((item, index) => (
+                //           <div className="image" key={index}>
+                //             <span
+                //               className="delete"
+                //               onClick={() => deleteImage(index)}
+                //             >
+                //               &times;
+                //             </span>
+                //             <img src={item.url}></img>
+                //           </div>
+                //         ))
+                //       : null} */}
+                //   </div>
+                // ))}
+                //   </div>
+                //   <button type="button" onClick={handleChange}>
+                //     Upload
+                //   </button>
+                // </div>
+              }
+            </div>
+
+            <div className="text-xl font-bold">
+              <p className="mt-8">เนื้อหา</p>
+              {works?.type === "FICTION" && (
+                <div className="flex justify-center pt-8 pb-12">
+                  <Editor
+                    apiKey="b0cflehrofjbs4hfxcodrxozkigdl4o2lbnvpvoi0q9r34lv"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    // initialValue={contenttext}
+                    initialValue={
+                      contenttext.old != contenttext.new ? contenttext.old : ""
+                    }
+                    placeholder="พิมพ์ข้อความ....."
+                    // onChange={(e) => setContenttext(e.level.content)}
+
+                    onChange={(e, editor) => {
+                      setContenttext({ new: editor.getContent() });
+                    }}
+                    init={{
+                      height: 288,
+                      width: 944,
+                      menubar: false,
+                      plugins: [
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "image",
+                        "charmap",
+                        "preview",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "code",
+                        "help",
+                        "wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | blocks | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | help",
+                      content_style:
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
+                  />
+                </div>
               )}
-
-              <input name="file" type="file" className="file" multiple ref={fileInputRef} onChange={onFileSelect}></input>
             </div>
-            <div className="container">
-              {images.map((images,index) => (
-                <div className="image" key={index}>
-                <span className="delete" onClick={() => deleteImage(index)}>&times;</span>
-                <img src={images.url} alt={images.name}/>
-              </div>
-              ))}
-              
-              
-            </div>
-            <button type="button">
-              Upload
 
-            </button>
-          </div>
-
-          <div>
-            <p className="text-lg font-bold">เผยแพร่</p>
-            <input
-              type="checkbox"
-              id="statusCheckbox"
-              class="relative w-[3.25rem] h-7 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
+            <div className="flex justify-between gap-7 ">
+              <div>
+                <p className="text-lg font-bold">เผยแพร่</p>
+                <input
+                  type="checkbox"
+                  id="statusCheckbox"
+                  class="relative w-[3.25rem] h-7 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
                           before:inline-block before:w-6 before:h-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200"
-              //   value={status}
-              //   onChange={(e) => {
-              //     if (e.target.checked) {
-              //       e.target.value = "public"; // Set value to 'public' when checked
-              //       setStatus(e.target.value);
-              //     } else {
-              //       e.target.value = "hidden"; // Set value to 'public' when checked
-              //       setStatus(e.target.value);
-              //     }
-              //     console.log(e.target.value);
-              //   }}
-            />
-            <label for="hs-basic-usage" class="sr-only">
-              เผยแพร่{" "}
-            </label>
-          </div>
-
-          <div className="flex justify-around gap-7 mt-6 mb-20">
-            <button
-              type="button"
-              className="w-full inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-arrow-left-square"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"
+                  value={status}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      e.target.value = "public"; // Set value to 'public' when checked
+                      setStatus(e.target.value);
+                    } else {
+                      e.target.value = "hidden"; // Set value to 'public' when checked
+                      setStatus(e.target.value);
+                    }
+                  }}
                 />
-              </svg>
-              ย้อนกลับ
-            </button>
-            <button
-              type="submit"
-              className=" w-full inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-save"
-                viewBox="0 0 16 16"
-              >
-                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
-              </svg>
-              บันทึก
-            </button>
+                <label for="hs-basic-usage" class="sr-only">
+                  เผยแพร่{" "}
+                </label>
+              </div>
+
+              <div className="flex justify-between gap-7">
+                <button
+                  type="button"
+                  className="w-28 h-11 inline-flex items-center gap-x-2  text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-arrow-left-square"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"
+                    />
+                  </svg>
+                  ย้อนกลับ
+                </button>
+                <button
+                  type="submit"
+                  className=" w-28 h-11 inline-flex items-center gap-x-2 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-save"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
+                  </svg>
+                  บันทึก
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
-    )
+  );
 }
 
 export default Epupdatetoon;
