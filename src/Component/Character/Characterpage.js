@@ -7,6 +7,7 @@ import { Dropdown } from "flowbite-react";
 import Navbarcreator from "../Navbarceartor";
 import Navbarread from "../Navbarread";
 import Navbar from "../Navbar";
+import Charactermain from "./Charactermain";
 
 function Characterpage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function Characterpage() {
   const [user, setUser] = useState([]);
   const params = useParams();
   const [items, setItems] = useState([]);
+  const perPage = undefined;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -63,7 +65,7 @@ function Characterpage() {
           </div>
         </div>
 
-        <Character />
+        <Charactermain data={perPage} />
       </div>
     </div>
   );

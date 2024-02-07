@@ -5,6 +5,7 @@ import Navbarread from "./Navbarread";
 import { Dropdown } from "flowbite-react";
 import Navbarcreator from "./Navbarceartor";
 import Character from "./Character/Character";
+import Charactermain from "./Character/Charactermain";
 
 function Main_page() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function Main_page() {
   const [user, setUser] = useState([]);
   const params = useParams();
   const [items, setItems] = useState([]);
-
+  const perPage = 6;
   useEffect(() => {
     const token = localStorage.getItem("token");
     var myHeaders = new Headers();
@@ -270,13 +271,16 @@ function Main_page() {
               <div className="item-center text-xl font-bold">ตัวละคร</div>
             </div>
             <div>
-              <a className="text-xl font-bold cursor-pointer" onClick={character}>
+              <a
+                className="text-xl font-bold cursor-pointer"
+                onClick={character}
+              >
                 ดูทั้งหมด
               </a>
             </div>
           </div>
 
-          <Character/>
+          <Charactermain data={perPage} />
         </div>
       </div>
     </div>

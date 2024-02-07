@@ -1,12 +1,9 @@
 import Navbar from "./Navbar";
-import Navbarcreator from "./Navbarceartor";
-import Navbarread from "./Navbarread";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import Character from "./Character/Character";
-
+import Charactermain from "./Character/Charactermain";
 
 function Homepage() {
   const [user, setUser] = useState({});
@@ -14,6 +11,7 @@ function Homepage() {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const [items, setItems] = useState([]);
+  const perPage = 6;
 
   useEffect(() => {
     var requestOptions = {
@@ -27,7 +25,7 @@ function Homepage() {
         // console.log(result);
         setItems(result);
       });
-  });
+  }, []);
 
   const login = () => {
     navigate("/login");
@@ -76,7 +74,11 @@ function Homepage() {
               </div>
               <div className="item-center text-xl font-bold">นวนิยาย</div>
             </div>
-            <div><a className="text-xl font-bold cursor-pointer" onClick={ficpage}>ดูทั้งหมด</a></div>
+            <div>
+              <a className="text-xl font-bold cursor-pointer" onClick={ficpage}>
+                ดูทั้งหมด
+              </a>
+            </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
             {items
@@ -137,8 +139,10 @@ function Homepage() {
               <div className="item-center text-xl font-bold">การ์ตูน</div>
             </div>
             <div>
-              <a className="text-xl font-bold cursor-pointer" onClick={carpage}>ดูทั้งหมด</a>
-              </div>
+              <a className="text-xl font-bold cursor-pointer" onClick={carpage}>
+                ดูทั้งหมด
+              </a>
+            </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mb-12">
             {items
@@ -199,13 +203,16 @@ function Homepage() {
               <div className="item-center text-xl font-bold">ตัวละคร</div>
             </div>
             <div>
-              <a className="text-xl font-bold cursor-pointer" onClick={character}>
+              <a
+                className="text-xl font-bold cursor-pointer"
+                onClick={character}
+              >
                 ดูทั้งหมด
               </a>
             </div>
           </div>
 
-          <Character/>
+          <Charactermain data={perPage} />
         </div>
       </div>
     </div>
