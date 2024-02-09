@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Navbarread from "./Navbarread";
 import Navbarcreator from "./Navbarceartor";
 import { useParams } from "react-router-dom";
@@ -78,6 +79,9 @@ function Eptooncreate() {
       });
   }, []);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const token = localStorage.getItem("token");
@@ -97,6 +101,21 @@ function Eptooncreate() {
     [...images].forEach((file, i) => {
       formdata.append(`pictures[${i}][images]`, file.name);
     });
+
+    event.preventDefault();
+
+    if (!title) {
+      Swal.fire({
+        text: "กรุณาใส่ชื่อเรื่อง",
+        icon: "warning",
+      });
+      return;
+    }
+
+
+    setIsSubmitting(true);
+
+
 
     var requestOptions = {
       method: "POST",
@@ -148,6 +167,38 @@ function Eptooncreate() {
   function deleteImage(index) {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
+
+
+  const Backto = () => {
+    // ตรวจสอบว่าแต่ละฟิลด์มีค่าหรือไม่
+    const hasTitle = title !== "";
+    const hasStatus = status !== "";
+
+
+    // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
+    if (
+      hasTitle ||
+      hasStatus
+    ) {
+      Swal.fire({
+        title: "ต้องการย้อนกลับหรือไม่",
+        text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        // ถ้ากดยืนยัน ให้ไปหน้าหลัก
+        if (result.value) {
+          navigate("/listpage/" + id);
+        }
+      });
+    }
+  };
+
+
 
   return (
     <div>
@@ -288,6 +339,7 @@ function Eptooncreate() {
 
               <div className="flex justify-between gap-7">
                 <button
+                onClick={Backto}
                   type="button"
                   className="w-28 h-11 inline-flex items-center gap-x-2  text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
                 >
@@ -307,6 +359,7 @@ function Eptooncreate() {
                   ย้อนกลับ
                 </button>
                 <button
+                disabled={isSubmitting}
                   type="submit"
                   className=" w-28 h-11 inline-flex items-center gap-x-2 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 >

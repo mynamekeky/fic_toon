@@ -248,11 +248,11 @@ function Episodelistpage() {
                         <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">
                         {row.status == "hidden" ? (
                               <h3 class="text-lg font-bold text-white bg-grey rounded-full py-1 px-3 inline-flex items-center gap-x-1">
-                                {row.status}
+                                ดราฟต์
                               </h3>
                             ) : (
                               <h3 class="text-lg font-bold text-white bg-pass rounded-full py-1 px-3 inline-flex items-center gap-x-1">
-                                {row.status}
+                                เผยแพร่
                               </h3>
                             )}
                         </td>

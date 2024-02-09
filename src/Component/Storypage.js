@@ -10,8 +10,6 @@ import Navbar from "./Navbar";
 import Character from "./Character/Character";
 
 function Storypage() {
-
-  
   // Accepting `id` as a prop
   const { id } = useParams();
   const { workId } = useParams();
@@ -24,6 +22,7 @@ function Storypage() {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
+  
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
@@ -55,8 +54,6 @@ function Storypage() {
   //     .catch((error) => console.log("error", error));
   // }, []);
 
-  
-
   useEffect(() => {
     // alert(id);
   }, {});
@@ -82,9 +79,9 @@ function Storypage() {
         console.log(result);
       })
       .catch((error) => console.log("error", error));
-
   }, []);
 
+  const [episodeCount, setEpisodeCount] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -104,8 +101,6 @@ function Storypage() {
       })
       .catch((error) => console.log("error", error));
   }, []);
-
-
 
   useEffect(() => {
     const fetchStory = async () => {
@@ -139,9 +134,17 @@ function Storypage() {
     navigate("/episodecartoon");
   };
 
+  const [totalEpisodes, setTotalEpisodes] = useState(0);
+  const [currentEpisode, setCurrentEpisode] = useState(1); // เริ่มจาก 1
+  const handleEpisodeChange = (e) => {
+    const newEpisode = parseInt(e.target.value);
+    if (newEpisode > 0 && newEpisode <= totalEpisodes) {
+      setCurrentEpisode(newEpisode);
+    }
+  };
+
   return (
     <div>
-      <h1>555555555</h1>
       {!user.role && <Navbar />}
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
@@ -212,10 +215,11 @@ function Storypage() {
 
         <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
-        <Character data={id}/>
+        <div className="">
+          <Character data={id} />
 
-        <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-
+          <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+        </div>
         <div>
           <div className="text-2xl font-bold">ตอนทั้งหมด</div>
 
@@ -245,17 +249,16 @@ function Storypage() {
 
                       <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         {episode
-                          .filter(
-                            (item) =>
-                              item.status === "public"
-                          )
-                          .map((ep) => (
+                          .filter((item) => item.status === "public")
+                          .map((ep, index) => (
                             <tr>
                               <td
                                 onClick={() => eps(ep.id)}
                                 class="cursor-pointer px-6 py-4 whitespace-nowrap text-base  font-medium text-gray-800 dark:text-gray-200"
+                                value={currentEpisode}
+                                onChange={handleEpisodeChange}
                               >
-                                1
+                                {index + 1}
                               </td>
 
                               <td

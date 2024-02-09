@@ -87,7 +87,7 @@ function Charupdate(id) {
       method: 'DELETE',
       redirect: 'follow'
     };
-    
+    console.log(characterId)
     fetch(`http://127.0.0.1:3500/characters/${characterId}`, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))

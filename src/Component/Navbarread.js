@@ -37,7 +37,7 @@ function Navbarread() {
           console.log(result);
         })
         .catch((error) => console.log("error", error));
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);

@@ -254,6 +254,37 @@ function Epupdatetoon() {
     console.log(images.data);
   };
 
+
+  const Backto = () => {
+    // ตรวจสอบว่าแต่ละฟิลด์มีค่าหรือไม่
+    const hasTitle = title !== "";
+    const hasStatus = status !== "";
+
+
+    // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
+    if (
+      hasTitle ||
+      hasStatus
+    ) {
+      Swal.fire({
+        title: "ต้องการย้อนกลับหรือไม่",
+        text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        // ถ้ากดยืนยัน ให้ไปหน้าหลัก
+        if (result.value) {
+          navigate("/main_page/");
+        }
+      });
+    }
+  };
+
+
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
@@ -482,6 +513,7 @@ function Epupdatetoon() {
 
               <div className="flex justify-between gap-7">
                 <button
+                onClick={Backto}
                   type="button"
                   className="w-28 h-11 inline-flex items-center gap-x-2  text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
                 >
