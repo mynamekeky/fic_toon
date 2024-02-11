@@ -69,10 +69,13 @@ function Epupdatetoon() {
 
     fetch(`http://127.0.0.1:3500/works/${work}`, requestOptions)
       .then((res) => res.json())
-      .then((result) => {
-        setWorks(result);
-        // console.log(works)
-      });
+      .then(
+        (result) => {
+          setWorks(result);
+          // console.log(works)
+        },
+        [work]
+      );
 
     fetch(`http://127.0.0.1:3500/espisodes/${id}`, requestOptions)
       .then((res) => res.json())
@@ -142,18 +145,18 @@ function Epupdatetoon() {
     } else {
       formdata.append("contentText", contenttext.old);
     }
-    let i = 0
+    let i = 0;
     const data = images.data.map((item) => {
       if (item.url) {
         formdata.append(`pictures[${i}][image]`, item.file);
-        if(item.id){
+        if (item.id) {
           formdata.append(`pictures[${i}][id]`, item.id);
         }
-        i = i + 1
-        return item
+        i = i + 1;
+        return item;
       }
     });
-    
+
     var requestOptions = {
       method: "PATCH",
       headers: myHeaders,
@@ -163,7 +166,17 @@ function Epupdatetoon() {
 
     fetch(`http://127.0.0.1:3500/espisodes/${id}`, requestOptions)
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log(result);
+        if (result.statusCode === 200) {
+          Swal.fire({
+            text: "แก้ไขเสร็จสิ้น",
+            icon: "success",
+          }).then((value) => {
+            navigate("/listpage/" + work);
+          });
+        }
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -254,18 +267,13 @@ function Epupdatetoon() {
     console.log(images.data);
   };
 
-
   const Backto = () => {
     // ตรวจสอบว่าแต่ละฟิลด์มีค่าหรือไม่
     const hasTitle = title !== "";
     const hasStatus = status !== "";
 
-
     // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
-    if (
-      hasTitle ||
-      hasStatus
-    ) {
+    if (hasTitle || hasStatus) {
       Swal.fire({
         title: "ต้องการย้อนกลับหรือไม่",
         text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
@@ -283,7 +291,6 @@ function Epupdatetoon() {
       });
     }
   };
-
 
   return (
     <div>
@@ -306,135 +313,81 @@ function Epupdatetoon() {
               ></input>
             </div>
 
-            <div className="mt-16 border">
-              {
-                works?.type === "CARTOON" && (
-                  <div className="container">
-                    <div className="border p-5">
-                      <input type="file" name="file" onChange={handleClick} />
-                    </div>
-                    <div className="flex overflow-x-auto gap-4 px-11 pt-9">
-                      {images.data
-                        ? images.data.map((item, index) => (
-                            <div className="new-img" key={index}>
-                              <div>
-                                <span
-                                  className="delete font-bold text-4xl bg-white rounded-xl mt-3 text-danger py-0 px-3"
-                                  onClick={() => deleteImage(index, item?.id)}
-                                >
-                                  &times;
-                                </span>
-                                <label
-                                  for={`file-upload-${index}`}
-                                  class="w-56 h-72 rounded-xl cursor-pointer "
-                                >
-                                  <img
-                                    className="w-56 h-72 rounded-xl"
-                                    src={
-                                      item.file
-                                        ? item.url
-                                        : `../../img/work/` + item.name
-                                    }
-                                  />
-                                </label>
-                                <input
-                                  className="invisible "
-                                  type="file"
-                                  id={`file-upload-${index}`}
-                                  name="file"
-                                  onChange={(e) => updateImg(e, index)}
-                                />
-                              </div>
-                            </div>
-                          ))
-                        : null}
-                    </div>
+            <div className="mt-16 mb-8 border">
+              {works?.type === "CARTOON" && (
+                <div className="container">
+                  {/* <input type="file" name="file" onChange={handleClick} /> */}
+                  <div className="flex ms-6 mb-6">
+                    <label
+                      for="file"
+                      class="bg-white border py-3.5 px-4 mt-5 w-56 text-center font-bold rounded-lg cursor-pointer"
+                    >
+                      <p className="inline-flex gap-2 self-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-upload"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                          <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
+                        </svg>
+                        อัพโหลดรูปภาพ
+                      </p>
+                    </label>
+                    <input
+                      className="hidden "
+                      type="file"
+                      id="file"
+                      name="file"
+                      onChange={handleClick}
+                    />
                   </div>
-                )
+                  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
-                // <div className="container">
-                //   <label
-                //     htmlFor="formFile"
-                //     className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                //   >
-                //     Default file input example
-                //   </label>
-                //   <input
-                //     className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                //     type="file"
-                //     id="formFile"
-                //   />
-                // {images.data.map((item, index) => (
-                //   <div className="new-img" key={index}>
-                //     <img src={`../../img/work/` + item.name}></img>
-                //   </div>
-                // ))}
-                // </div>
-
-                // <div className="card">
-                //   <div className="top">
-                //     <p>Drag & Drop image uploading</p>
-                //   </div>
-                //   <div className="drag-area">
-                //     {isDragging ? (
-                //       <span className="select">Drop Image Here</span>
-                //     ) : (
-                //       <>
-                //         Drag & Drop image here or{" "}
-                //         <span
-                //           className="select"
-                //           role="button"
-                //           onClick={selectFiles}
-                //         >
-                //           Browse
-                //         </span>
-                //       </>
-                //     )}
-
-                //     <input
-                //       name="file"
-                //       type="file"
-                //       className="file"
-                //       multiple
-                //       ref={fileInputRef}
-                //       onChange={onFileSelect}
-                //     ></input>
-                //   </div>
-                //   <div className="container">
-                // {images.data.map((item, index) => (
-                //   <div className="image" key={index}>
-                //     <span
-                //       className="delete"
-                //       onClick={() => deleteImage(index)}
-                //     >
-                //       &times;
-                //     </span>
-                //     <img src={`../../img/work/` + item.name}></img>
-                //     {/* {updateImages.length > 1
-                //       ? updateImages.map((item, index) => (
-                //           <div className="image" key={index}>
-                //             <span
-                //               className="delete"
-                //               onClick={() => deleteImage(index)}
-                //             >
-                //               &times;
-                //             </span>
-                //             <img src={item.url}></img>
-                //           </div>
-                //         ))
-                //       : null} */}
-                //   </div>
-                // ))}
-                //   </div>
-                //   <button type="button" onClick={handleChange}>
-                //     Upload
-                //   </button>
-                // </div>
-              }
+                  <div className="flex overflow-x-auto gap-4 px-11 pt-7">
+                    {images.data
+                      ? images.data.map((item, index) => (
+                          <div className="new-img" key={index}>
+                            <div>
+                              <span
+                                className="delete font-bold text-4xl bg-white rounded-xl mt-3 text-danger py-0 px-3"
+                                onClick={() => deleteImage(index, item?.id)}
+                              >
+                                &times;
+                              </span>
+                              <label
+                                for={`file-upload-${index}`}
+                                class="w-56 h-72 rounded-xl cursor-pointer "
+                              >
+                                <img
+                                  className="w-56 h-72 rounded-xl"
+                                  src={
+                                    item.file
+                                      ? item.url
+                                      : `../../img/work/` + item.name
+                                  }
+                                />
+                              </label>
+                              <input
+                                className="invisible "
+                                type="file"
+                                id={`file-upload-${index}`}
+                                name="file"
+                                onChange={(e) => updateImg(e, index)}
+                              />
+                            </div>
+                          </div>
+                        ))
+                      : null}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="text-xl font-bold">
-              <p className="mt-8">เนื้อหา</p>
               {works?.type === "FICTION" && (
                 <div className="flex justify-center pt-8 pb-12">
                   <Editor
@@ -513,7 +466,7 @@ function Epupdatetoon() {
 
               <div className="flex justify-between gap-7">
                 <button
-                onClick={Backto}
+                  onClick={Backto}
                   type="button"
                   className="w-28 h-11 inline-flex items-center gap-x-2  text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
                 >

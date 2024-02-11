@@ -55,11 +55,11 @@ function Characterpage() {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-file-image"
+              class="bi bi-file-person"
               viewBox="0 0 16 16"
             >
-              <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-              <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12z" />
+              <path d="M12 1a1 1 0 0 1 1 1v10.755S12 11 8 11s-5 1.755-5 1.755V2a1 1 0 0 1 1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+              <path d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
             </svg>
             <div className="text-xl font-bold ">ตัวละคร</div>
           </div>

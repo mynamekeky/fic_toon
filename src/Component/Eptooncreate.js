@@ -1,4 +1,4 @@
-import "./Eptooncreate.css";
+// import "./Eptooncreate.css";
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -80,7 +80,6 @@ function Eptooncreate() {
   }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -112,10 +111,7 @@ function Eptooncreate() {
       return;
     }
 
-
     setIsSubmitting(true);
-
-
 
     var requestOptions = {
       method: "POST",
@@ -127,13 +123,13 @@ function Eptooncreate() {
     fetch("http://127.0.0.1:3500/espisodes", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
+        console.log(result);
         if (result.statusCode === 200) {
           Swal.fire({
-            text: "success",
+            text: "สร้างตอนเสร็จสิ้น",
             icon: "success",
           }).then((window.location.href = "/listpage/" + id));
-        } 
+        }
       })
       .catch((error) => console.log("error", error));
   };
@@ -168,18 +164,13 @@ function Eptooncreate() {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
-
   const Backto = () => {
     // ตรวจสอบว่าแต่ละฟิลด์มีค่าหรือไม่
     const hasTitle = title !== "";
     const hasStatus = status !== "";
 
-
     // ถ้ามีฟิลด์ใด ๆ มีค่า ให้ขึ้น swal
-    if (
-      hasTitle ||
-      hasStatus
-    ) {
+    if (hasTitle || hasStatus) {
       Swal.fire({
         title: "ต้องการย้อนกลับหรือไม่",
         text: "หากคุณยืนยัน ข้อมูลที่กรอกจะหายไป",
@@ -198,8 +189,6 @@ function Eptooncreate() {
     }
   };
 
-
-
   return (
     <div>
       {user.role === "MEMBER" && <Navbarread />}
@@ -211,7 +200,9 @@ function Eptooncreate() {
         >
           <div className="border rounded-lg bg-white px-12 py-12">
             <div>
-              <div className="block text-xl font-bold mb-2 ">ชื่อตอน</div>
+              <div className="block text-xl font-bold mb-2 ">
+                ชื่อตอน <a className="text-danger">*</a>
+              </div>
               <input
                 className="w-full rounded-lg border-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                 type="text"
@@ -220,54 +211,73 @@ function Eptooncreate() {
               ></input>
             </div>
             {items.type === "CARTOON" && (
-              <div className="card">
-                <div className="top">
-                  <p>Drag & Drop image uploading</p>
-                </div>
-                <div className="drag-area">
-                  {isDragging ? (
-                    <span className="select">Drop Image Here</span>
-                  ) : (
+              <div className="mt-8 mb-8">
+                <p className="font-bold text-xl mb-2">
+                  เนื้อหา <a className="text-danger">*</a>
+                </p>
+                <div className="border ">
+                  <div className="flex ms-6 mb-6">
                     <>
-                      Drag & Drop image here or{" "}
                       <span
-                        className="select"
+                        className="select bg-white border py-3.5 px-4 mt-5 w-56 text-center font-bold rounded-lg cursor-pointer"
                         role="button"
                         onClick={selectFiles}
                       >
-                        Browse
+                        <p className="inline-flex gap-2 self-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-upload"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
+                          </svg>
+                          อัพโหลดรูปภาพ
+                        </p>
                       </span>
                     </>
-                  )}
 
-                  <input
-                    name="file"
-                    type="file"
-                    className="file"
-                    multiple
-                    ref={fileInputRef}
-                    onChange={onFileSelect}
-                  ></input>
+                    <input
+                      name="file"
+                      type="file"
+                      className="hidden"
+                      multiple
+                      ref={fileInputRef}
+                      onChange={onFileSelect}
+                    ></input>
+                  </div>
+
+                  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+                  <div className="container flex overflow-x-auto gap-4 px-11 pt-7 h-96">
+                    {images.map((images, index) => (
+                      <div className="image" key={index}>
+                        <label
+                          for="im"
+                          className="delete text-danger font-bold text-xl"
+                          onClick={() => deleteImage(index)}
+                        >
+                          &times;
+                        </label>
+                        <img
+                          id="im"
+                          className="w-56 h-72 rounded-xl"
+                          src={images.url}
+                          alt={images.name}
+                        />
+                        <input className="invisible " />
+                      </div>
+                    ))}
+                  </div>
+                  {/* <button type="button">Upload</button> */}
                 </div>
-                <div className="container">
-                  {images.map((images, index) => (
-                    <div className="image" key={index}>
-                      <span
-                        className="delete"
-                        onClick={() => deleteImage(index)}
-                      >
-                        &times;
-                      </span>
-                      <img src={images.url} alt={images.name} />
-                    </div>
-                  ))}
-                </div>
-                {/* <button type="button">Upload</button> */}
               </div>
             )}
 
             <div className="text-xl font-bold">
-              <p className="mt-8">เนื้อหา</p>
               {items.type === "FICTION" && (
                 <div className="flex justify-center  pb-12">
                   <Editor
@@ -339,7 +349,7 @@ function Eptooncreate() {
 
               <div className="flex justify-between gap-7">
                 <button
-                onClick={Backto}
+                  onClick={Backto}
                   type="button"
                   className="w-28 h-11 inline-flex items-center gap-x-2  text-lg text-start shadow bg-white hover:bg-purple-400 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
                 >
@@ -359,7 +369,7 @@ function Eptooncreate() {
                   ย้อนกลับ
                 </button>
                 <button
-                disabled={isSubmitting}
+                  disabled={isSubmitting}
                   type="submit"
                   className=" w-28 h-11 inline-flex items-center gap-x-2 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 >
@@ -376,8 +386,6 @@ function Eptooncreate() {
                   บันทึก
                 </button>
               </div>
-
-
             </div>
           </div>
         </form>

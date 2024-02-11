@@ -65,9 +65,17 @@ function Charactermain(perPage) {
           fetch("http://127.0.0.1:3500/users/donate", requestOptions)
             .then((response) => response.json())
             .then((result) => {
+              console.log(result)
               if (result.massage === "ไม่สามารถสนับสนุนตัวละครของตัวเองได้") {
                 Swal.fire({
                   text: "ไม่สามารถสนับสนุนตัวละครของตัวเองได้",
+                  icon: "error",
+                });
+              }
+
+              if (result.massage === "กรุณาตรวจสอบยอดเงินของคุณ") {
+                Swal.fire({
+                  text: "กรุณาตรวจสอบยอดเงินของคุณ",
                   icon: "error",
                 });
               }
@@ -101,7 +109,7 @@ function Charactermain(perPage) {
     <div className="grid grid-cols-3 gap-4">
       {character.length > 1 ? (
         character.slice(0, perPage.data).map((item) => (
-          <div className="border rounded-lg pt-3 pb-6 px-5 shadow-sm">
+          <div className="border rounded-lg pt-3 pb-6 px-5 shadow-sm bg-white">
             <div className="flex justify-between text-center font-bold">
               <div>
                 {/* <p className="text-2xl">{item.roleAs}</p> */}
@@ -168,7 +176,7 @@ function Charactermain(perPage) {
             <div className="font-bold">
               <div className="text-center">
                 <p className="text-3xl">{item.name}</p>
-                <p className="text-sm mb-2">{item.work.title}</p>
+                <p className="text-lg mb-2">เรื่อง {item.work.title}</p>
                 <p
                   onClick={() => donate(item.id)}
                   className="text-lg text-warning border border-warning rounded-xl w-full py-0.5 px-6 cursor-pointer"

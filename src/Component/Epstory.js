@@ -24,38 +24,31 @@ function Epstory() {
   const [images, setImages] = useState({ data: [], file: [] });
 
   useEffect(() => {
-    // UserGet();
+    UserGet();
   }, []);
 
-  // const UserGet = () => {
-  //   const token = localStorage.getItem("token");
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Authorization", "Bearer " + token);
+  const UserGet = () => {
+    const token = localStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
 
-  //   var requestOptions = {
-  //     method: "GET",
-  //     headers: myHeaders,
-  //     redirect: "follow",
-  //   };
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
 
-  //   fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       if (result.status === 200) {
-  //         setUser(result.user);
-  //         setIsLoaded(false);
-  //       } else if (result.message === "Unauthorized") {
-  //         Swal.fire({
-  //           text: "กรุณา Login",
-  //           icon: "error",
-  //         }).then((value) => {
-  //           navigate("/login");
-  //         });
-  //       }
-  //       console.log(result);
-  //     })
-  //     .catch((error) => console.log("error", error));
-  // };
+    fetch("http://127.0.0.1:3500/auth/getProfile", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 200) {
+          setUser(result.user);
+          setIsLoaded(false);
+        }
+        console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -96,7 +89,7 @@ function Epstory() {
       .then((response) => response.json())
       .then((result) => {
         const data = result.map((item) => {
-          if (item.status === 'public') {
+          if (item.status === "public") {
             if (item != undefined) {
               return item;
             }
@@ -178,13 +171,39 @@ function Epstory() {
             className="w-28 inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-200 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
             onClick={previous}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+              />
+            </svg>
             ก่่อนหน้า
           </button>
           <button
-            className="w-28 inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
+            className="w-28 inline-flex justify-center items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
             onClick={next}
           >
             ถัดไป
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+              />
+            </svg>
           </button>
         </div>
       </div>

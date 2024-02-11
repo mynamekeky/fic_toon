@@ -110,7 +110,7 @@ function Character(id) {
     <div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="border rounded-lg pt-3 pb-6 px-5 shadow-sm">
+        <div className="border rounded-lg pt-3 pb-6 px-5 shadow-sm bg-white">
           <div className="flex justify-between text-center font-bold">
             <div>
               <p className="text-2xl">{thaiRoleName}</p>
@@ -166,7 +166,7 @@ function Character(id) {
           <div className="font-bold">
             <div className="text-center">
               <p className="text-3xl">{name}</p>
-              <p className="text-sm mb-2">{title}</p>
+              <p className="text-lg mb-2">เรื่อง {title}</p>
               <p
                 onClick={donate}
                 className="text-lg text-warning border border-warning rounded-xl w-full py-0.5 px-6 cursor-pointer"

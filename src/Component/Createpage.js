@@ -313,7 +313,20 @@ function Createpage() {
                 for="file"
                 class="bg-white border py-3.5 px-4 mt-5 w-full text-center font-bold rounded-lg cursor-pointer "
               >
-                <p>อัพโหลดรูปภาพ</p>
+                <p className="inline-flex gap-2 self-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-upload"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
+                  </svg>
+                  อัพโหลดรูปภาพ
+                </p>
               </label>
               <input
                 className="invisible "
@@ -482,8 +495,18 @@ function Createpage() {
               class="bg-red-100 text-red-700 font-bold text-xl px-4 py-3 rounded relative"
               role="alert"
             >
-              <span class="block sm:inline">
-                คุณต้องสร้างผลงานก่อนจึงจะสามารถสร้างผลงานได้
+              <span class="inline-flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-exclamation-triangle-fill self-center"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+                คุณต้องสร้างผลงานก่อนจึงจะสามารถสร้างตัวละครได้
               </span>
             </div>
             <div className="my-12 rounded opacity-50">
@@ -644,7 +667,20 @@ function Createpage() {
                       for="file-upload"
                       class="bg-white border py-3.5 px-4 mt-5 w-full text-center font-bold rounded-lg"
                     >
-                      <p>อัพโหลดรูปภาพ</p>
+                      <p className="inline-flex gap-2 self-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-upload"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                          <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
+                        </svg>
+                        อัพโหลดรูปภาพ
+                      </p>
                     </label>
                     <input
                       className="invisible "
@@ -691,10 +727,17 @@ function Createpage() {
                     <div className="mt-8">
                       <div className="grid grid-cols-2">
                         <div className="grid grid-cols-2 gap-4">
-                          <button
-                            disabled
-                            className="bg-primary border p-0 text-white font-bold rounded-lg inline-block"
-                          >
+                          <button className="w-full inline-flex items-center gap-x-2  text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              class="bi bi-save"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
+                            </svg>
                             บันทึก
                           </button>
                         </div>

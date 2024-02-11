@@ -16,13 +16,11 @@ function Storypage() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [user, setUser] = useState([]);
   const [story, setStory] = useState({}); // State for story data
-
+  const [character, setCharacter] = useState([]);
   const [episode, setEpisode] = useState([]);
 
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
-
-  
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
@@ -100,6 +98,14 @@ function Storypage() {
         setEpisode(result);
       })
       .catch((error) => console.log("error", error));
+
+    fetch(`http://127.0.0.1:3500/works/${id}`, {
+      headers: myHeaders,
+    })
+      .then((response) => response.json())
+      .then((storyData) => {
+        setCharacter(storyData.characters);
+      });
   }, []);
 
   useEffect(() => {
@@ -216,7 +222,7 @@ function Storypage() {
         <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
         <div className="">
-          <Character data={id} />
+          {character.length >= 1 ? <Character data={id} /> : null}
 
           <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         </div>
