@@ -126,6 +126,10 @@ function Episodelistpage() {
     window.location = `/epupdatetoon/${id}/` + epId;
   };
 
+  const toEp = (epId) => {
+    window.location = "/epstory/"+ id +"/"+ epId;
+  }
+
   const createfic = () => {
     navigate("/epficcreate");
   };
@@ -148,7 +152,7 @@ function Episodelistpage() {
       <div className="w-9/12 m-auto">
         <div className=" bg-white text-sm py-4 dark:bg-gray-800 mb-8 border rounded-lg">
           <div
-            class="max-w-[85rem] w-full mx-auto  flex flex-wrap basis-full items-center justify-between"
+            class="max-w-[85rem] w-full mx-auto  flex flex-wrap basis-full items-center justify-between pe-4 ps-4"
             aria-label="Global"
           >
             <p class="sm:order-1 inline-flex items-center gap-x-2 flex-none text-xl font-semibold dark:text-white">
@@ -239,7 +243,7 @@ function Episodelistpage() {
                             {index + 1}
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">
-                            <a>{row.title}</a>
+                            <a className="cursor-pointer" onClick={() => toEp(row.id)}>{row.title}</a>
                           </td>
 
                           <td class="px-6 py-4 whitespace-nowrap text-base font-bold text-gray-800 dark:text-gray-200">

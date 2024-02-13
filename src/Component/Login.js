@@ -78,7 +78,7 @@ function Login() {
       <div className="">
         <Navbar />
 
-        <div className="grid justify-items-center mt-10 ">
+        <div className="grid justify-items-center mt-20">
           <form
             onSubmit={handleSubmit}
             className="bg-white shadow rounded px-8 pt-6 pb-8 mb-4 w-1/4"

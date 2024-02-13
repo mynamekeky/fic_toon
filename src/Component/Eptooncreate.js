@@ -105,7 +105,7 @@ function Eptooncreate() {
 
     if (!title) {
       Swal.fire({
-        text: "กรุณาใส่ชื่อเรื่อง",
+        text: "กรุณาใส่ชื่อตอน",
         icon: "warning",
       });
       return;
@@ -145,6 +145,7 @@ function Eptooncreate() {
 
   function onFileSelect(event) {
     const files = event.target.files;
+    console.log(files);
     if (fileInputRef.length === 0) return;
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.split("/")[0] !== "image") continue;
@@ -162,6 +163,28 @@ function Eptooncreate() {
 
   function deleteImage(index) {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  }
+
+  function updateImg(e, index) {
+    const files = e.target.files[0];
+    const update = images.map((item, i) => {
+      if (i === index) {
+        const data = {
+          ...item,
+          name: files,
+          url: URL.createObjectURL(files),
+        };
+
+        console.log(data);
+        return data;
+      } else {
+        // The rest haven't changed
+        return item;
+      }
+    });
+
+    console.log(update);
+    setImages(update);
   }
 
   const Backto = () => {
@@ -255,18 +278,38 @@ function Eptooncreate() {
                   <div className="container flex overflow-x-auto gap-4 px-11 pt-7 h-96">
                     {images.map((images, index) => (
                       <div className="image" key={index}>
-                        <label
-                          for="im"
-                          className="delete text-danger font-bold text-xl"
+                        <span
+                          className="bg-white rounded-xl mt-3 flex justify-center mb-3 text-danger cursor-pointer"
                           onClick={() => deleteImage(index)}
                         >
-                          &times;
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash3-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                          </svg>
+                        </span>
+                        <label
+                          for={`file-upload-${index}`}
+                          class="w-56 h-72 rounded-xl cursor-pointer "
+                        >
+                          <img
+                            id="im"
+                            className="w-56 h-72 rounded-xl"
+                            src={images.url}
+                            alt={images.name}
+                          />
                         </label>
-                        <img
-                          id="im"
-                          className="w-56 h-72 rounded-xl"
-                          src={images.url}
-                          alt={images.name}
+                        <input
+                          className="invisible "
+                          type="file"
+                          id={`file-upload-${index}`}
+                          name="file"
+                          onChange={(e) => updateImg(e, index)}
                         />
                         <input className="invisible " />
                       </div>

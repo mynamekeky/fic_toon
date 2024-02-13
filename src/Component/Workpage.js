@@ -138,10 +138,10 @@ function Workpage() {
     <div>
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
-      <div className="w-9/12 m-auto">
+      <div className="w-9/12 m-auto mb-8">
         <div class="flex flex-wrap sm:justify-start sm:flex-nowrap  bg-white text-sm py-4 dark:bg-gray-800 mb-8 border rounded-lg">
           <div
-            class="max-w-[85rem] w-full mx-auto  flex flex-wrap basis-full items-center justify-between"
+            class="max-w-[85rem] w-full mx-auto  flex flex-wrap basis-full items-center justify-between ps-4 pe-4"
             aria-label="Global"
           >
             <p class="sm:order-1 inline-flex items-center gap-x-2 flex-none text-xl font-semibold dark:text-white">
@@ -313,7 +313,7 @@ function Workpage() {
                           <button
                             type="button"
                             onClick={() => Listpage(row.id)}
-                            class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-pass text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                            class="w-24 py-3 px-4 inline-box items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-pass text-white hover:bg-green-400 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
                             รายการ
                           </button>
@@ -323,7 +323,7 @@ function Workpage() {
                           <button
                             onClick={() => UserUpdate(row.id)}
                             type="button"
-                            class="w-24 py-3 px-4 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-warning text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                            class="w-24 py-3 px-4 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-warning text-white shadow-sm hover:bg-yellow-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -343,7 +343,7 @@ function Workpage() {
                           <button
                             onClick={() => UserDelete(row.id)}
                             type="button"
-                            class="w-24 py-3 px-4 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-danger text-white shadow-sm hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                            class="w-24 py-3 px-4 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-gray-200 bg-danger text-white shadow-sm hover:bg-red-400 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

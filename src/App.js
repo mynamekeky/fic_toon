@@ -20,10 +20,11 @@ import Epupdatefic from "./Component/Epupdatefic";
 import Epupdatetoon from "./Component/Epupdatetoon";
 import Epstory from "./Component/Epstory";
 import Characterpage from "./Component/Character/Characterpage";
+import Footer from "./Component/Footer/Footer";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App flex flex-col min-h-screen">
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="login" element={<Login />} />
@@ -47,7 +48,7 @@ function App() {
       </Routes>
 
       
-      
+      <Footer/>
     </div>
   );
 }

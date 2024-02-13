@@ -1,10 +1,9 @@
-import { useState, useEffect , useParams } from "react";
+import { useState, useEffect, useParams } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 function Charcreate(id) {
-
   const navigate = useNavigate();
   // const { id } = useParams();
   const [file, setFile] = useState({ preview: "", data: "" });
@@ -25,13 +24,13 @@ function Charcreate(id) {
     formdata.append("name", name);
     if (roleAs != null || "" || undefined) {
       formdata.append("roleAs", roleAs);
-      console.log(roleAs)
+      console.log(roleAs);
     }
     formdata.append("workId", id.data);
 
-    console.log(file.data)
-    console.log(name)
-    console.log(id.data)
+    console.log(file.data);
+    console.log(name);
+    console.log(id.data);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -67,14 +66,13 @@ function Charcreate(id) {
     setFile(img);
   };
 
-  console.log(id)
+  console.log(id);
 
   return (
     <div className="my-12">
       <div>
         <div className="grid grid-cols-12">
           <div className="col-start-1 col-end-4 grid justify-items-center">
-
             {file.preview ? (
               <img src={file.preview} width="224" height="299"></img>
             ) : (
@@ -223,20 +221,20 @@ function Charcreate(id) {
               for="file-upload"
               class="bg-white border py-3.5 px-4 mt-5 w-full text-center font-bold rounded-lg cursor-pointer "
             >
-                <p className="inline-flex gap-2 self-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-upload"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
-                  </svg>
-                  อัพโหลดรูปภาพ
-                </p>
+              <p className="inline-flex gap-2 self-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-upload"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                  <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
+                </svg>
+                อัพโหลดรูปภาพ
+              </p>
             </label>
             <input
               className="invisible "
@@ -278,34 +276,20 @@ function Charcreate(id) {
             </div>
 
             <div className="mt-8">
-              <div className="grid grid-cols-2">
-                {/* <div>
-                    <p className="text-lg font-bold">เผยแพร่ create</p>
-                    <input
-                    type="checkbox"
-                    id="hs-basic-usage"
-                    class="relative w-[3.25rem] h-7 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
-                            before:inline-block before:w-6 before:h-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200"
-                    value="hidden"
-                    //   onChange={(e) => {
-                    //     if (e.target.checked) {
-                    //       e.target.value = "public"; // Set value to 'public' when checked
-                    //       setStatus(e.target.value);
-                    //     } else {
-                    //       e.target.value = "hidden"; // Set value to 'public' when checked
-                    //       setStatus(e.target.value);
-                    //     }
-                    //   }}
-                    />
-                    <label for="hs-basic-usage" class="sr-only">
-                    เผยแพร่ create{" "}
-                    </label>
-                </div> */}
-
-                <div className="grid grid-cols-2 gap-4">
-                    <button className="bg-primary border p-0 text-white font-bold rounded-lg inline-block" onClick={handleSubmit}>บันทึก</button>
-                </div>
-                    
+              <div className="grid grid-cols-2 gap-4">
+                <button className="w-full inline-flex items-center gap-x-2  text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-save"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
+                  </svg>
+                  บันทึก
+                </button>
               </div>
             </div>
           </div>

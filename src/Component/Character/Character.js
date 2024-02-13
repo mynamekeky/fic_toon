@@ -13,6 +13,8 @@ function Character(id) {
 
   const [char, setChar] = useState();
 
+  const navigate = useNavigate();
+
 
 
   const [type, setType] = useState("");
@@ -53,46 +55,76 @@ function Character(id) {
 
   
 
-  const donate = () => {
+  const donate = (id) => {
     Swal.fire({
       title: "สนับสนุนตัวละครนี้",
       text: "กรอกจำนวนเหรียญด้านล่าง",
       icon: "warning",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
+      input: "number",
       showCancelButton: true,
       confirmButtonText: "สนับสนุน",
       confirmButtonColor: "#6F5EE0",
       showLoaderOnConfirm: true,
       cancelButtonText: "ยกเลิก",
-      preConfirm: async (login) => {
-        try {
-          const githubUrl = `
-                  https://api.github.com/users/${login}
-                `;
-          const response = await fetch(githubUrl);
-          if (!response.ok) {
-            return Swal.showValidationMessage(`
-                    ${JSON.stringify(await response.json())}
-                  `);
-          }
-          return response.json();
-        } catch (error) {
-          Swal.showValidationMessage(`
-                  Request failed: ${error}
-                `);
+      preConfirm: async (i) => {
+        if (i) {
+          const token = localStorage.getItem("token");
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", "Bearer " + token);
+
+          var raw = JSON.stringify({
+            coin: i,
+            characterId: id,
+          });
+
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+
+          fetch("http://127.0.0.1:3500/users/donate", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result)
+              if (result.massage === "ไม่สามารถสนับสนุนตัวละครของตัวเองได้") {
+                Swal.fire({
+                  text: "ไม่สามารถสนับสนุนตัวละครของตัวเองได้",
+                  icon: "error",
+                });
+              }
+
+              if (result.massage === "กรุณาตรวจสอบยอดเงินของคุณ") {
+                Swal.fire({
+                  text: "เหรียญไม่เพียงพอ กรุณาตรวจสอบเหรียญในกระเป๋าของคุณ",
+                  icon: "error",
+                });
+              }
+
+              if (result.statusCode === 200) {
+                Swal.fire({
+                  text: "สนับสนุนเสร็จสิ้น",
+                  icon: "success",
+                });
+              }
+
+              if (result.statusCode === 401) {
+                Swal.fire({
+                  text: "กรุณาเข้าสู่ระบบก่อนที่จะสนับสนุน",
+                  icon: "error",
+                }).then((value) => {
+                  navigate("/login");
+                });;
+              }
+            })
+            .catch((error) => console.log("error", error));
+        } else {
+          Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
         }
       },
       allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url,
-        });
-      }
     });
   };
 
@@ -168,8 +200,8 @@ function Character(id) {
               <p className="text-3xl">{name}</p>
               <p className="text-lg mb-2">เรื่อง {title}</p>
               <p
-                onClick={donate}
-                className="text-lg text-warning border border-warning rounded-xl w-full py-0.5 px-6 cursor-pointer"
+                onClick={() => donate(characterId)}
+                className="text-lg text-warning border border-warning hover:bg-warning hover:text-white rounded-xl w-full py-0.5 px-6 cursor-pointer"
               >
                 สนับสนุน
               </p>

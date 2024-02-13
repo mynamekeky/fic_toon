@@ -45,7 +45,6 @@ function Epstory() {
           setUser(result.user);
           setIsLoaded(false);
         }
-        console.log(result);
       })
       .catch((error) => console.log("error", error));
   };
@@ -90,13 +89,14 @@ function Epstory() {
       .then((result) => {
         const data = result.map((item) => {
           if (item.status === "public") {
-            if (item != undefined) {
-              return item;
-            }
+            return item;
           }
         });
-        console.log(data);
-        setEspisodes(data);
+        const ep = data.filter((i) => {
+          return i !== undefined;
+        });
+
+        setEspisodes(ep);
       })
       .catch((error) => console.log("error", error));
   }, [id]);
@@ -118,7 +118,6 @@ function Epstory() {
 
   const next = () => {
     const foundIndex = espisodes.findIndex((item) => item.id == id);
-
     if (espisodes[foundIndex + 1]) {
       window.location = `/epstory/${work}/` + espisodes[foundIndex + 1].id;
     } else {
@@ -127,8 +126,6 @@ function Epstory() {
         icon: "error",
       });
     }
-
-    console.log(espisodes);
   };
   return (
     <div>
@@ -138,7 +135,7 @@ function Epstory() {
       <div className="w-5/12 m-auto container mx-auto border rounded-lg bg-white px-12 py-12 mb-32">
         <div>
           <div>
-            <p className="text-2xl font-bold">ชื่อเรื่อง</p>
+            <p className="text-2xl font-bold">ชื่อตอน</p>
             <p className="border rounded-lg py-3.5 px-4 text-base font-medium mb-8">
               {episode.title}
             </p>
@@ -167,25 +164,48 @@ function Epstory() {
         <hr class="h-px mb-8 mt-12 bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
         <div className="flex justify-between ">
-          <button
-            className="w-28 inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-200 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
-            onClick={previous}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-chevron-left"
-              viewBox="0 0 16 16"
+          {espisodes.findIndex((item) => item.id == id) !== 0 ? (
+            <button
+              className="w-28 inline-flex justify-center items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
+              onClick={previous}
             >
-              <path
-                fill-rule="evenodd"
-                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
-              />
-            </svg>
-            ก่่อนหน้า
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-chevron-left"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                />
+              </svg>
+              ก่อนหน้า
+            </button>
+          ) : (
+            <button
+              className="w-28 inline-flex items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-200 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
+              onClick={previous}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-chevron-left"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                />
+              </svg>
+              ก่อนหน้า
+            </button>
+          )}
+
           <button
             className="w-28 inline-flex justify-center items-center gap-x-2 mt-10 text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded-full"
             onClick={next}

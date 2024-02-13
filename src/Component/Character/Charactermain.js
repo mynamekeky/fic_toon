@@ -75,7 +75,7 @@ function Charactermain(perPage) {
 
               if (result.massage === "กรุณาตรวจสอบยอดเงินของคุณ") {
                 Swal.fire({
-                  text: "กรุณาตรวจสอบยอดเงินของคุณ",
+                  text: "เหรียญไม่เพียงพอ กรุณาตรวจสอบเหรียญในกระเป๋าของคุณ",
                   icon: "error",
                 });
               }
@@ -179,7 +179,7 @@ function Charactermain(perPage) {
                 <p className="text-lg mb-2">เรื่อง {item.work.title}</p>
                 <p
                   onClick={() => donate(item.id)}
-                  className="text-lg text-warning border border-warning rounded-xl w-full py-0.5 px-6 cursor-pointer"
+                  className="text-lg text-warning border border-warning hover:bg-warning hover:text-white rounded-xl w-full py-0.5 px-6 cursor-pointer"
                 >
                   สนับสนุน
                 </p>

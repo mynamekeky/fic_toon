@@ -123,7 +123,7 @@ function Main_page() {
     <div>
       {user.role === "MEMBER" && <Navbarread />}
       {user.role === "CREATOR" && <Navbarcreator />}
-      <div className="w-5/12 m-auto container mx-auto px-12 py-12 mb-32">
+      <div className="w-5/12 m-auto container mx-auto px-12 py-12 mb-8">
         <div>
           <div className="border rounded-xl p-4 mb-6 flex justify-between bg-white">
             <div className="py-1 px-3 inline-flex items-center gap-x-1">

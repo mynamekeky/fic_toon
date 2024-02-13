@@ -96,6 +96,7 @@ function Storypage() {
       .then((response) => response.json())
       .then((result) => {
         setEpisode(result);
+        console.log(episode);
       })
       .catch((error) => console.log("error", error));
 
@@ -122,11 +123,14 @@ function Storypage() {
         });
 
         const result = await response.json();
+        console.log(result);
         setStory(result);
       } catch (error) {
         console.error("Error fetching story:", error);
         // Handle error gracefully
       }
+
+      console.log(story);
     };
 
     fetchStory();
@@ -167,7 +171,7 @@ function Storypage() {
 
               <label>
                 <p className="text-xl font-bold border rounded-lg px-4 py-3 w-56 text-center">
-                  {user.name}
+                  {story.user?.name}
                 </p>
               </label>
             </div>
@@ -219,13 +223,14 @@ function Storypage() {
           </div>
         </div>
 
+        {character.length >= 1 ? (
+          <div className="">
+            <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+            <Character data={id} />
+          </div>
+        ) : null}
+
         <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-
-        <div className="">
-          {character.length >= 1 ? <Character data={id} /> : null}
-
-          <hr class="h-px mb-8 mt-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-        </div>
         <div>
           <div className="text-2xl font-bold">ตอนทั้งหมด</div>
 
