@@ -120,7 +120,7 @@ function Eptooncreate() {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:3500/espisodes", requestOptions)
+    fetch(`http://127.0.0.1:3500/espisodes/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
@@ -219,7 +219,7 @@ function Eptooncreate() {
       <div>
         <form
           onSubmit={handleSubmit}
-          className="w-6/12 m-auto container mx-auto  "
+          className="w-6/12 m-auto container mx-auto mb-8 "
         >
           <div className="border rounded-lg bg-white px-12 py-12">
             <div>
@@ -320,7 +320,7 @@ function Eptooncreate() {
               </div>
             )}
 
-            <div className="text-xl font-bold">
+            <div className="text-xl font-bold mt-8">
               {items.type === "FICTION" && (
                 <div className="flex justify-center  pb-12">
                   <Editor

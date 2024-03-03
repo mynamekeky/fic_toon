@@ -195,11 +195,11 @@ function Charcreate(id) {
                     </defs>
                   </svg>
                   <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold">รูปภาพหน้าปก</span>
+                    <span class="font-semibold">รูปภาพตัวละคร</span>
                   </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                  {/* <p class="text-xs text-gray-500 dark:text-gray-400">
                     ขนาดไฟล์ไม่เกิน : 1MB
-                  </p>
+                  </p> */}
                 </div>
                 {/* <input id="dropzone-file" type="file" class="hidden" /> */}
               </label>
@@ -277,7 +277,7 @@ function Charcreate(id) {
 
             <div className="mt-8">
               <div className="grid grid-cols-2 gap-4">
-                <button className="w-full inline-flex items-center gap-x-2  text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                <button className="w-full inline-flex items-center gap-x-2  text-lg text-start shadow bg-violet-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"

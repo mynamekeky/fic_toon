@@ -136,7 +136,7 @@ function Epstory() {
         <div>
           <div>
             <p className="text-2xl font-bold">ชื่อตอน</p>
-            <p className="border rounded-lg py-3.5 px-4 text-base font-medium mb-8">
+            <p className="border rounded-lg py-3.5 px-4 text-base font-bold mb-8">
               {episode.title}
             </p>
           </div>

@@ -180,14 +180,14 @@ function Storypage() {
               <label>
                 <div className="mb-4">
                   <p className="text-lg font-bold">ชื่อเรื่อง</p>
-                  <p className="border rounded-lg px-4 py-3">{story.title}</p>
+                  <p className="border rounded-lg px-4 py-3 font-bold">{story.title}</p>
                 </div>
               </label>
 
               <label>
                 <div className="mb-4">
                   <p className="text-lg font-bold">คำโปรย</p>
-                  <p className="border rounded-lg px-4 py-3 h-24">
+                  <p className="border rounded-lg px-4 py-3 h-24 font-bold overflow-auto">
                     {story.tagline}
                   </p>
                 </div>
@@ -196,7 +196,7 @@ function Storypage() {
               <label>
                 <div className="mb-4">
                   <p className="text-lg font-bold">หมวดหมู่</p>
-                  <p className="border rounded-lg px-4 py-3">
+                  <p className="border rounded-lg px-4 py-3 font-bold">
                     {story.category}
                   </p>
                 </div>

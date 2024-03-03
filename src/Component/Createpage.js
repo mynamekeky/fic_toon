@@ -21,7 +21,7 @@ function Createpage() {
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [intro, setIntro] = useState("");
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState("hidden");
 
   const [isLoaded, setIsLoaded] = useState(true);
   const [user, setUser] = useState([]);
@@ -62,46 +62,61 @@ function Createpage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const token = localStorage.getItem("token");
+    let validate = true;
 
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer " + token);
-    var formdata = new FormData();
-    formdata.append("file", file.data);
-    formdata.append("title", title);
-    if (status != null || "" || undefined) {
-      formdata.append("status", status);
+    const inputType = [title, tagline];
+    inputType.forEach((item) => {
+      console.log(item)
+      if (item === "" || null || undefined) {
+        validate = false;
+        Swal.fire({
+          text: `กรุณากรอกข้อมูล`,
+          icon: "error",
+        });
+      }
+    });
+
+    if (validate === true) {
+      const token = localStorage.getItem("token");
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
+      var formdata = new FormData();
+      formdata.append("file", file.data);
+      formdata.append("title", title);
+      if (status != null || "" || undefined) {
+        formdata.append("status", status);
+      }
+      formdata.append("intro", intro);
+      formdata.append("tagline", tagline);
+      formdata.append("category", category);
+      formdata.append("type", type);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+      };
+
+      fetch("http://127.0.0.1:3500/works", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.status === 200) {
+            Swal.fire({
+              text: "success",
+              icon: "success",
+            }).then((window.location.href = "/workpage"));
+          } else {
+            Swal.fire({
+              text: "กรุณากรอกข้อมูล",
+              icon: "error",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     }
-    formdata.append("intro", intro);
-    formdata.append("tagline", tagline);
-    formdata.append("category", category);
-    formdata.append("type", type);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("http://127.0.0.1:3500/works", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.status === 200) {
-          Swal.fire({
-            text: "success",
-            icon: "success",
-          }).then((window.location.href = "/workpage"));
-        } else {
-          Swal.fire({
-            text: "กรุณากรอกข้อมูล",
-            icon: "error",
-          });
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
   };
 
   const handleFile = (e) => {
@@ -294,9 +309,9 @@ function Createpage() {
                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
                       <span class="font-semibold">รูปภาพหน้าปก</span>
                     </p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
-                      ขนาดไฟล์ไม่เกิน : 1MB
-                    </p>
+                    {/* <p class="text-xs text-gray-500 dark:text-gray-400">
+                      อัพโหลดได้ 1 รูป เท่านั้น
+                    </p> */}
                   </div>
                   {/* <input id="dropzone-file" type="file" class="hidden" /> */}
                 </label>
@@ -345,11 +360,11 @@ function Createpage() {
                       for="with-corner-hint"
                       class="block text-lg font-bold mb-2 dark:text-white"
                     >
-                      ชื่อเรื่อง
+                      ชื่อเรื่อง<a className="text-danger"> *</a>
                       <input
                         type="text"
                         id="with-corner-hint"
-                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                         placeholder="title"
                         onChange={(e) => setTitle(e.target.value)}
                       ></input>
@@ -357,13 +372,13 @@ function Createpage() {
                   </div>
 
                   <div className="col-start-11 col-end-11">
-                    <p className="text-lg font-bold">เผยแพร่</p>
+                    <p className="text-lg font-bold">เผยแพร่ </p>
                     <input
                       type="checkbox"
                       id="hs-basic-usage"
                       class="relative w-[3.25rem] h-7 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
                           before:inline-block before:w-6 before:h-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200"
-                      value="hidden"
+                      value={status}
                       onChange={(e) => {
                         if (e.target.checked) {
                           e.target.value = "public"; // Set value to 'public' when checked
@@ -384,7 +399,7 @@ function Createpage() {
                   for="with-corner-hint"
                   class="block text-lg font-bold mb-2 dark:text-white"
                 >
-                  คำโปรย
+                  คำโปรย<a className="text-danger"> *</a>
                   <textarea
                     type="text"
                     id="with-corner-hint"
@@ -397,7 +412,7 @@ function Createpage() {
 
               <div className="grid grid-cols-2">
                 <label className="">
-                  <p className="my-3 text-lg font-bold">ประเภท</p>
+                  <p className="my-3 text-lg font-bold">ประเภท<a className="text-danger"> *</a></p>
 
                   <div className="flex gap-6">
                     <input
@@ -427,7 +442,7 @@ function Createpage() {
                 </label>
 
                 <label for="countries" class=" text-gray-900 dark:text-white">
-                  <p className="my-3 text-lg font-bold">หมวดหมู่</p>
+                  <p className="my-3 text-lg font-bold">หมวดหมู่<a className="text-danger"> *</a></p>
                   <select
                     id="countries"
                     class="bg-gray-50 border text-lg font-bold border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -445,8 +460,9 @@ function Createpage() {
           </div>
 
           <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
-
-          <div className="flex justify-center pt-8 pb-12">
+<p className="pt-8 pb-4 text-xl font-bold">แนะนำเรื่อง</p>
+          <div className="flex justify-center  pb-12">
+            
             <Editor
               apiKey="b0cflehrofjbs4hfxcodrxozkigdl4o2lbnvpvoi0q9r34lv"
               onInit={(evt, editor) => (editorRef.current = editor)}
@@ -513,7 +529,7 @@ function Createpage() {
               <div>
                 <div className="grid grid-cols-12">
                   <div className="col-start-1 col-end-4 grid justify-items-center">
-                    {file.preview ? (
+                    {/* {file.preview ? (
                       <img
                         className=""
                         src={file.preview}
@@ -521,7 +537,7 @@ function Createpage() {
                         height="299"
                         disabled
                       ></img>
-                    ) : (
+                    ) : ( */}
                       <label
                         for="dropzone-file"
                         class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -641,15 +657,15 @@ function Createpage() {
                             </defs>
                           </svg>
                           <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                            <span class="font-semibold">รูปภาพหน้าปก</span>
+                            <span class="font-semibold">รูปภาพตัวละคร</span>
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
-                            ขนาดไฟล์ไม่เกิน : 1MB
-                          </p>
+                          {/* <p class="text-xs text-gray-500 dark:text-gray-400">
+                            อัพ
+                          </p> */}
                         </div>
                         {/* <input id="dropzone-file" type="file" class="hidden" /> */}
                       </label>
-                    )}
+                    {/* )} */}
 
                     {/* <label
               for="file-upload"
